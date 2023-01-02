@@ -11,10 +11,11 @@ const app = express();
 /* const noteExists = require('./controllersNotes/notesExists');
 const listNotes = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
-const newNote = require('./controllersNotes/newNote');
+const addNote = require('./controllersNotes/addNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-const publicNote = require('./controllersNotes/publicNote'); */
+const deleteAllNotes = require('./controllersNotes');
+const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
 /* const getCategory = require('./controllersCategory/getCategory');
@@ -153,15 +154,15 @@ app.use((error, req, res, next) => {
     status: 'error',
     message: error.message,
   });
-}); 
+});
 
 // Not found
- app.use((req, res) => {
+app.use((req, res) => {
   res.status(404).send({
     status: 'error',
     message: 'Not found',
   });
-}); 
+});
 
 const port = 8888;
 
