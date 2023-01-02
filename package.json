@@ -1,0 +1,30 @@
+{
+  "devDependencies": {
+    "eslint": "^8.31.0",
+    "prettier": "^2.8.1"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "proyecto2_ema",
+  "description": "DESCRIPCIÓN",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pachxmama/Proyecto2_EMA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pachxmama/Proyecto2_EMA/issues"
+  },
+  "homepage": "https://github.com/pachxmama/Proyecto2_EMA#readme"
+}
