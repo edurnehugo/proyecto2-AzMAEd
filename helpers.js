@@ -3,6 +3,7 @@ const path = require('path');
 const sharp = require('sharp');
 const uuid = require('uuid');
 const crypto = require('crypto');
+const crypto = require('crypto');
 
 const sendgrid = require('@sendgrid/mail');
 
