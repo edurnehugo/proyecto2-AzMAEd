@@ -20,4 +20,6 @@ async function addNote(req, res, next) {
   }
 }
 
-module.exports = addNote;
+module.exports = {
+  addNote,
+};
