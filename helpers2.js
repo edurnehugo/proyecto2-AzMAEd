@@ -16,6 +16,14 @@ function formatDateToDB(date) {
   return format(new Date(date), 'yyyy-MM-dd HH:mm:ss');
 }
 
+const createPathIfNotExists = async (path) => {
+  try {
+    await fs.access(path);
+  } catch {
+    await fs.mkdir(path);
+  }
+};
+
 async function processAndSaveImage(uploadedImage) {
   // Creamos el directorio (con recursive: true por si hay subdirectorios y así no da error)
   await fs.mkdir(imageUploadPath, { recursive: true });
@@ -44,11 +52,12 @@ async function deleteUpload(uploadedImage) {
 }
 
 /////
-function generateError(message, code = 500) {
+
+const generateError = (message, status) => {
   const error = new Error(message);
-  error.status = code;
+  error.httpStatus = status;
   return error;
-}
+};
 
 function showDebug(message) {
   if (process.env.NODE_ENV === 'development') {
@@ -60,8 +69,6 @@ module.exports = {
   formatDateToDB,
   processAndSaveImage,
   deleteUpload,
-  //randomString,
-  //sendMail,
   generateError,
   showDebug,
 };
