@@ -36,7 +36,7 @@ async function uploadEntryImage(req, res, next) {
       [id]
     );
 
-    if (images.length === 1) {
+    if (images.length > 0) {
       throw generateError(
         'No se puede subir imagenes a esta nota, borra la actual primero',
         406
