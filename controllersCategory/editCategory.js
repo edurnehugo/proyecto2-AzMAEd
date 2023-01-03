@@ -1,7 +1,7 @@
-const { getConnection } = require('../../db');
-const { formatDateToDB, generateError } = require('../../helpers');
+const { getConnection } = require('../db/db');
+const { generateError } = require('../helpers2');
 
-const { editCategorySchema } = require('../../validators/categoryValidators');
+const { categorySchema } = require('../validators/categoryValidators');
 
 async function editCategory(req, res, next) {
   let connection;
@@ -9,7 +9,7 @@ async function editCategory(req, res, next) {
   try {
     connection = await getConnection();
 
-    await editCategorySchema.validateAsync(req.body);
+    await categorySchema.validateAsync(req.body);
 
     // Sacamos los datos
     const { title } = req.body;
@@ -27,7 +27,7 @@ async function editCategory(req, res, next) {
 
     const [currentCategory] = current;
 
-    if (currentCategory.user_id !== req.auth.id && req.auth.role !== 'user') {
+    if (currentCategory.user_id !== req.auth.id) {
       throw generateError('No tienes permisos para editar esta nota', 403);
     }
 
@@ -37,7 +37,7 @@ async function editCategory(req, res, next) {
       UPDATE category SET title=?
       WHERE id=?
     `,
-      [formatDateToDB(date), title, id]
+      [title, id]
     );
 
     // Devolver resultados
@@ -45,12 +45,11 @@ async function editCategory(req, res, next) {
       status: 'ok',
       data: {
         id,
-        date,
-        place,
-        description,
+        title,
       },
     });
   } catch (error) {
+    console.log('Error en editar categoria:', error);
     next(error);
   } finally {
     if (connection) connection.release();

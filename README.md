@@ -42,12 +42,31 @@ Implementar una API que permita publicar notas privadas de texto y categorizarla
 
 ## Endpoints
 
-- **POST /user** Registro de usuario ✅
-- **POST /login** Login de usuario (devuelve token) ✅
+- \*\* ENDPOINTS DE NOTAS
 
-- **POST /** Permite crear un tweet (necesita cabecera con token) ✅
-- **GET /** Lista todos los tweets ✅
-- **GET /tweet/:id** Deveuelve un tweet ✅
-- **DELETE /tweet/:id** Borra un tweet sólo si eres quien lo creó ✅
+  - \*\* APP.GET('/notes', listNotes); LISTAR NOTAS
+  - \*\* APP.GET('/notes/:id', isUser, getNote); VISUALIZAR UNA NOTA EN CONCRETO POR USUARIO
+  - \*\* APP.GET('/notes/:id', getNote); VISUALIZAR NOTA PUBLICA
+  - \*\* APP.POST('/notes', isUser, getCategory, newNote);
+  - \*\* APP.PUT('/notes/:id', isUser, noteExists, editNote);
+  - \*\* APP.POST('/notes/:id/images', isUser, noteExists, uploadNoteImage);
+  - \*\* APP.DELETE('/notes/:id/images/:imageID', isUser, noteExists, deleteNoteImage);
+  - \*\* APP.DELETE('/notes/:id', isUser, isAdmin, noteExists, deleteNote);
+  - \*\* APP.patch('/note/:id/public', isUser, noteExists, publicNote);
 
-- **GET /user/:id** Devuelve información de usuario ✅
+- \*\* ENDPOINTS DE CATEGORIAS
+
+  - \*\* APP.GET('/category', isUser, getCategory);
+  - \*\* APP.POST('/category', isUser, categoryExists, newCategory);
+  - \*\* APP.PUT('/category/:id', isUser, categoryExists, editCategory);
+  - \*\* APP.DELETE('/category/:id', isUser, categoryExists, deleteCategory);
+
+- \*\* ENDPOINTS DE USUARIO
+
+  - \*\* APP.POST('/users', newUser);
+  - \*\* APP.POST('/users/login', loginUser);
+
+## Anotaciones a la hora de realizar el proyecto
+
+- \*\* problemas con Git con repositorio y a la hora de subir por ramas.
+- \*\*

@@ -1,7 +1,7 @@
 const { getConnection } = require('../db/db');
 const { generateError, deleteUpload } = require('./../helpers2');
 
-async function deleteEntryImage(req, res, next) {
+async function deleteNoteImage(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
@@ -21,7 +21,7 @@ async function deleteEntryImage(req, res, next) {
     // Comprobar que el usuario puede editar esta entrada
     const [currentEntry] = current;
 
-    if (currentEntry.user_id !== req.auth.id && req.auth.role !== 'admin') {
+    if (currentEntry.user_id !== req.auth.id && req.auth.role !== 'user') {
       throw generateError('No tienes permisos para editar esta nota', 403);
     }
 
@@ -55,10 +55,11 @@ async function deleteEntryImage(req, res, next) {
       message: 'Imagen borrada',
     });
   } catch (error) {
+    console.log(`Error:`, error);
     next(error);
   } finally {
     if (connection) connection.release();
   }
 }
 
-module.exports = deleteEntryImage;
+module.exports = deleteNoteImage;

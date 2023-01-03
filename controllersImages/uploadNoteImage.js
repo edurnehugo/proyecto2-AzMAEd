@@ -8,8 +8,8 @@ async function uploadEntryImage(req, res, next) {
 
     const { id } = req.params;
 
-    // Comprobar que el usuario puede actualizas las imagenes de la entrda
-    // Seleccionar la entrada del diario con la id
+    // Comprobar que el usuario puede actualizar las imagenes de la entrda
+    // Seleccionar la entrada de la nota con la id
     const [current] = await connection.query(
       `
         SELECT user_id
@@ -20,9 +20,9 @@ async function uploadEntryImage(req, res, next) {
     );
 
     // Comprobar que el usuario puede editar esta entrada
-    const [currentEntry] = current;
+    const [currentNote] = current;
 
-    if (currentEntry.user_id !== req.auth.id && req.auth.role !== 'admin') {
+    if (currentNote.user_id !== req.auth.id && req.auth.role !== 'user') {
       throw generateError('No tienes permisos para editar esta nota', 403);
     }
 
@@ -56,10 +56,10 @@ async function uploadEntryImage(req, res, next) {
           [processedImage, id]
         );
       } catch (error) {
-        throw generateError(
-          'No se pudo procesar la imagen. Inténtalo de nuevo',
-          400
-        );
+        console.log(`Error:`, error);
+        res
+          .status(400)
+          .send('No se pudo procesar la imagen. Inténtalo de nuevo');
       }
     } else {
       throw generateError('No se subió una imagen', 400);
