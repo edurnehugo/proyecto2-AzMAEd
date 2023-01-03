@@ -1,30 +1,27 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const { getConnection } = require("./db");
-
+const { getConnection } = require('./db');
 
 async function main() {
   let connection;
 
-    try {
-        // Conseguir conexión a la base de datos
-        connection = await getConnection();
-        
-        //Crear la BBDD
-        await connection.query("CREATE DATABASE if not exists notesForMe");
-        await connection.query("USE notesForMe;");
-      
-        
-        // Borrar las tablas si existen
+  try {
+    // Conseguir conexión a la base de datos
+    connection = await getConnection();
 
-        await connection.query("DROP TABLE IF EXISTS images");
-        await connection.query("DROP TABLE IF EXISTS notes");
-        await connection.query("DROP TABLE IF EXISTS category");
-        await connection.query("DROP TABLE IF EXISTS user");
-        
-        
-      // Crear las tablas
-      await connection.query(`
+    //Crear la BBDD
+    await connection.query('CREATE DATABASE if not exists notesForMe');
+    await connection.query('USE notesForMe');
+
+    // Borrar las tablas si existen
+
+    await connection.query('DROP TABLE IF EXISTS images');
+    await connection.query('DROP TABLE IF EXISTS notes');
+    await connection.query('DROP TABLE IF EXISTS category');
+    await connection.query('DROP TABLE IF EXISTS user');
+
+    // Crear las tablas
+    await connection.query(`
       CREATE TABLE user (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         registrationDate DATETIME,
@@ -35,7 +32,7 @@ async function main() {
             )
           `);
 
-       await connection.query(`
+    await connection.query(`
        CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         user_id INTEGER NOT NULL,
@@ -43,8 +40,8 @@ async function main() {
         FOREIGN KEY (user_id) references user (id)
               )
             `);
-            
-            await connection.query(`
+
+    await connection.query(`
       CREATE TABLE notes (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         dateCreate DATETIME,
@@ -69,13 +66,10 @@ async function main() {
         FOREIGN KEY (user_id) references user (id)
         )
         `);
-        
-
-    
   } catch (error) {
     console.error(error);
-} finally {
-    console.log("Todo hecho, liberando conexión");
+  } finally {
+    console.log('Todo hecho, liberando conexión');
     if (connection) connection.release();
     process.exit();
   }

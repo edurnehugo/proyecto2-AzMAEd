@@ -46,7 +46,7 @@ async function deleteUpload(uploadedImage) {
 /////
 function generateError(message, code = 500) {
   const error = new Error(message);
-  error.httpStatus = code;
+  error.status = code;
   return error;
 }
 
