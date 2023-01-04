@@ -1,5 +1,4 @@
 const { getConnection } = require('../db');
-//const { exec } = require ("child_process");
 const { showDebug } = require('../helpers');
 
 async function listNotes(req, res, next) {

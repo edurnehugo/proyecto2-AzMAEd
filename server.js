@@ -74,7 +74,7 @@ app.use(express.json());
 // Crear una nueva Nota
 // POST - /notes
 // Sólo usuarios registrados
-//app.post('/notes', isUser, getCategory, newNote);
+//app.post('/notes', isUser, getCategory, addNote);
 
 // Editar una nota * put o pach * (Sólo los datos que no sean images)
 // PUT - /notes/:id
@@ -98,6 +98,12 @@ app.use(express.json());
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
 //app.delete('/notes/:id', isUser, isAdmin, noteExists, deleteNote);
+
+// extra
+// Borrar todas las notas
+// DELETE - /notes/:id
+// Sólo usuario que creó estas notas
+app.deleteAllNotes('/notes/:id', isUser, isAdmin, noteExists, deleteAllNotes);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public

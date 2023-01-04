@@ -1,6 +1,6 @@
 const { getConnection } = require('../db');
 //const { exec } = require ("child_process");
-const { showDebug } = require('../helpers');
+//const { showDebug } = require('../helpers');
 
 function noteExists(note) {
   return new Promise((resolve, reject) => {
