@@ -1,40 +1,28 @@
 require("dotenv").config();
 
-const faker = require("faker/locale/es");
 const { getConnection } = require("./db");
-//const { formatDateToDB } = require("./helpers");
-//const { random } = require("lodash");
-
-
-function formatDateToDB(date) {
-    return format(new Date(date), "yyyy-MM-dd HH:mm:ss");
-}
-
-let connection;
 
 
 async function main() {
+  let connection;
+
     try {
         // Conseguir conexión a la base de datos
         connection = await getConnection();
-        
-        console
+      
         //Crear la BBDD
         await connection.query("CREATE DATABASE if not exists notesForMe");
-        
-        await connection.query("USE web;");
+        await connection.query("USE notesForMe;");
         
         // Borrar las tablas si existen
 
-        console.log("Borrando tablas");
         await connection.query("DROP TABLE IF EXISTS imagen");
         await connection.query("DROP TABLE IF EXISTS category");
         await connection.query("DROP TABLE IF EXISTS notes");
         await connection.query("DROP TABLE IF EXISTS user");
         
         
-        // Crear las tablas de nuevo
-        console.log("Creando tablas");
+        // Crear las tablas
         
         await connection.query(`
         CREATE TABLE user (
