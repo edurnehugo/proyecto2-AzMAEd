@@ -10,7 +10,7 @@ const uuid = require('uuid');
 const { format } = require('date-fns');
 
 // Definimos directorio de subida de imágenes
-const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
+//const imageUploadPath = path.join(__dirname, '../uploads');
 
 function formatDateToDB(date) {
   return format(new Date(date), 'yyyy-MM-dd HH:mm:ss');
@@ -71,4 +71,5 @@ module.exports = {
   deleteUpload,
   generateError,
   showDebug,
+  createPathIfNotExists,
 };

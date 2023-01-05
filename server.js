@@ -1,11 +1,11 @@
-//require('dotenv').config();
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 ////const fileUpload = require('express-fileupload');
-const port = 8080;
 const app = express();
+const port = 8080;
 
 // Notes controllers
 /* /* const noteExists = require('./controllersNotes/notesExists');
@@ -21,11 +21,12 @@ const publicNote = require('./controllersNotes/publicNote'); */
 const editCategory = require('./controllersCategory/editCategory');
 const newCategory = require('./controllersCategory/newCategory');
 const categoryExists = require('./controllersCategory/categoryExists');
+const categoryNoExists = require('./controllersCategory/categoryNoExists');
 const deleteCategory = require('./controllersCategory/deleteCategory'); */
 // Imagenes
-//const uploadNoteImage = require('./controllersImages/uploadNoteImage');
+////const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 //extra-no pedido ////////////
-//const deleteNoteImage = require('./controllersImages/deleteNoteImage');
+////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
 const newUser = require('./controllersUser/newUser');
@@ -39,9 +40,13 @@ const loginUser = require('./controllersUser/loginUser');
 app.use(cors());
 
 // Log de peticiones a la consola
-if (process.env.NODE_ENV === 'development') {
+/* if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-}
+} */
+app.use(morgan('dev'));
+
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -112,23 +117,27 @@ app.use(express.json());
 // extra - Crear una nueva categoria
 // get - /category
 // Sólo usuarios registrados
-//app.get('/category', isUser, getCategory);
+////app.get('/category', isUser, getCategory);
+app.get('/category/:id', getCategory);
 
 // extra - Crear una nueva categoria
 // POST - /category
 // Sólo usuarios registrados
-//app.post('/category', isUser, categoryExists, newCategory);
+////app.post('/category', isUser, categoryExists, newCategory);
+app.post('/category', categoryNoExists, newCategory);
 
 // extra - Editar categorias
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota "o admin"
-//app.put('/category/:id', isUser, categoryExists, editCategory);
+////app.put('/category/:id', isUser, categoryExists, editCategory);
+app.put('/category/:id', categoryExists, editCategory);
 
 // extra
 // Borrar una categoría
 // DELETE - /category/:id
 // Sólo usuario
-//app.delete('/category/:id', isUser, categoryExists, deleteCategory);
+////app.delete('/category/:id', isUser, categoryExists, deleteCategory);
+app.delete('/category/:id', categoryExists, deleteCategory);
 
 /*
   ENDPOINTS DE USUARIO

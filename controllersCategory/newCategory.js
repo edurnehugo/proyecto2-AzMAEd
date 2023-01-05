@@ -1,9 +1,10 @@
 const { getConnection } = require('../db/db');
-const { generateError } = require('../helpers2');
+//const { generateError } = require('../helpers2');
 const { categorySchema } = require('../validators/categoryValidators');
 
-async function newCategory(req, res, next) {
+const newCategory = async (req, res, next) => {
   let connection;
+  console.log('newcategory, introduce nueva categoria ');
   try {
     connection = await getConnection();
 
@@ -18,12 +19,13 @@ async function newCategory(req, res, next) {
       INSERT INTO category (title, user_id)
       VALUES(?,?)
       `,
-      [title, req.auth.id]
+      [title, user_id]
     );
 
+    console.log(result);
     // Devolver el resultado
 
-    res.send({
+    return res.send({
       status: 'ok',
       data: {
         id: result.insertId,
@@ -37,6 +39,5 @@ async function newCategory(req, res, next) {
   } finally {
     if (connection) connection.release();
   }
-}
-
+};
 module.exports = newCategory;
