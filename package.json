@@ -8,6 +8,8 @@
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
@@ -15,23 +17,26 @@
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
     "sharp": "^0.31.3",
+    "uuid": "^8.1.0",
+    "mysql2": "^2.3.3",
+    "sharp": "^0.31.2",
     "uuid": "^8.1.0"
   },
   "scripts": {
     "start": "nodemon server.js"
   },
-  "name": "proyecto2_ema",
+  "name": "proyecto2_azmaed",
   "description": "DESCRIPCIÓN",
   "version": "1.0.0",
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pachxmama/Proyecto2_EMA.git"
+    "url": "git+https://github.com/edurnehugo/proyecto2_AzMAEd.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pachxmama/Proyecto2_EMA/issues"
+    "url": "https://github.com/edurnehugo/proyecto2_AzMAEd/issues"
   },
-  "homepage": "https://github.com/pachxmama/Proyecto2_EMA#readme"
+  "homepage": "https://github.com/edurnehugo/proyecto2_AzMAEd#readme"
 }
