@@ -12,7 +12,8 @@ function randomString(length = 20) {
 
 async function sendMail({ email, title, content }) {
   // Configurar api key de sendgrid
-  sendgrid.setApiKey(process.env.SENDGRID_KEY);
+  let sendgrid
+   await sendgrid.setApiKey(process.env.SENDGRID_KEY);
 
   // Configurar mensaje
   const message = {

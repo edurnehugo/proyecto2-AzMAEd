@@ -1,23 +1,23 @@
 const { getConnection } = require("../db/db");
 const { generateError } = require("../helpers3");
 const jwt = require("jsonwebtoken");
-const { loginUserSchema } = require("../validators/userValidators");
+//const { loginUserSchema } = require("../validators/userValidators");
 
 async function loginUser(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
     // comprobar que se reciben los datos necesarios
-    await loginUserSchema.validateAsync(req.body);
+    //await loginUserSchema.validateAsync(req.body);
 
     const { email, password} = req.body;
 
     // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
     const [dbUser] = await connection.query(
       `
-      SELECT id, role, active
+      SELECT id
       FROM user
-      WHERE email=? AND password=(?)
+      WHERE email=? AND password=?
     `,
       [email, password]
     );
@@ -31,7 +31,7 @@ async function loginUser(req, res, next) {
     // Generar token con información del usuario
     const tokenInfo = {
       id: dbUser[0].id,
-      role: dbUser[0].role,
+      //role: dbUser[0].role,
     };
 
     const token = jwt.sign(tokenInfo, process.env.SECRET,

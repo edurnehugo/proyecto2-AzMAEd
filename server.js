@@ -42,6 +42,8 @@ app.use(cors());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
 // Procesado de body tipo json
 app.use(express.json());
