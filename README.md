@@ -23,6 +23,7 @@ Implementar una API que permita publicar notas privadas de texto y categorizarla
   - tittle
   - text
   - place
+  - category_id??
   - private (true o false) deafult true
   - date_created
 
@@ -31,9 +32,9 @@ Implementar una API que permita publicar notas privadas de texto y categorizarla
   - id
   - tittle (default unique)
   - User_id foreign key
-  - Notes_id foreign key
+  - Notes_id foreign key ??
 
-- Imagen :
+- Images :
   - Id
   - nameFile
   - Notes_id foreign key
