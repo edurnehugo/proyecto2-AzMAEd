@@ -2,12 +2,8 @@ const { getConnection } = require('../db');
 //const { exec } = require ("child_process");
 const { showDebug } = require('../helpers');
 
-module.exports = {
-    publicNote,
-};
+async publicNote(req, res, next) {
+     const connection = await getConnection();
+     
 
-TODO:
-async function publicNote(params) {
-    showDebug('publicNote');
 
-    const { path, tags, userId, db } = params;

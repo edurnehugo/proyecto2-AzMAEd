@@ -12,13 +12,13 @@ async function editEntry(req, res, next) {
     await editEntrySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { date, description, place } = req.body;
+    const { title, text, place } = req.body;
     const { id } = req.params;
 
     // Seleccionar datos actuales de la entrada
     const [current] = await connection.query(
       `
-    SELECT id, date, description, place, user_id
+    SELECT id, title, text, place, user_id
     FROM notes
     WHERE id=?
   `,
@@ -34,10 +34,10 @@ async function editEntry(req, res, next) {
     // Ejecutar la query de edición de la entrada
     await connection.query(
       `
-      UPDATE diary SET date=?, place=?, description=?, lastUpdate=UTC_TIMESTAMP
+      UPDATE notes SET title=?, place=?, text=?, lastUpdate=UTC_TIMESTAMP
       WHERE id=?
     `,
-      [formatDateToDB(date), place, description, id]
+      [formatDateToDB(title), place, text, id]
     );
 
     // Devolver resultados

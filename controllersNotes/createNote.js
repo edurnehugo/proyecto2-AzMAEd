@@ -5,10 +5,10 @@ const { showDebug } = require('../helpers');
 async function createNote(req, res, next) {
   const connection = await getConnection();
   try {
-    const { title, content, tags } = req.body;
+    const { title, text, place } = req.body;
     const row = await connection.query(
-      'INSERT INTO notes (title, content, tags) VALUES (?,?,?)',
-      [title, content, tags]
+      'INSERT INTO notes (title, text, place) VALUES (?,?,?)',
+      [title, text, place]
     );
     res.json(row);
   } catch (error) {
