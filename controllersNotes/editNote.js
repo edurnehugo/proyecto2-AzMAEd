@@ -19,7 +19,7 @@ async function editEntry(req, res, next) {
     const [current] = await connection.query(
       `
     SELECT id, date, description, place, user_id
-    FROM diary
+    FROM notes
     WHERE id=?
   `,
       [id]

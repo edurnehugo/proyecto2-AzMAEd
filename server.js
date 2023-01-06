@@ -169,6 +169,8 @@ app.use((req, res) => {
     message: 'Not found',
   });
 });
+// Settings
+app.set('port', 4000);
 
 const port = 8888;
 
