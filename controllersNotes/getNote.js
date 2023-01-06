@@ -1,5 +1,4 @@
 const { getConnection } = require('../db');
-//const { exec } = require ("child_process");
 const { showDebug } = require('../helpers');
 
 async function getNote(req, res, next) {
@@ -8,7 +7,7 @@ async function getNote(req, res, next) {
 
   try {
     const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM notes WHERE note=?', [
+    const result = await connection.query('SELECT * FROM notes WHERE id=?', [
       note,
     ]);
     showDebug('getNote', { result });
@@ -19,4 +18,6 @@ async function getNote(req, res, next) {
   }
 }
 
-module.exports = getNote;
+module.exports = {
+  getNote,
+};

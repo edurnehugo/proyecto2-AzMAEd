@@ -1,6 +1,5 @@
 const { getConnection } = require('../db');
-//const { exec } = require ("child_process");
-//const { showDebug } = require('../helpers');
+const { showDebug } = require('../helpers');
 
 function noteExists(note) {
   return new Promise((resolve, reject) => {
@@ -18,6 +17,20 @@ function noteExists(note) {
         reject(err);
       });
   });
+}
+
+async function noteExists(req, res, next) {
+  try {
+    const db = getConnection();
+    const content = req.body.content;
+    await noteExists(content);
+    res.status(200).send({
+      result: true,
+    });
+  } catch (err) {
+    showDebug(err);
+    res.status(500).send(err);
+  }
 }
 
 module.exports = {

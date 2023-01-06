@@ -8,6 +8,10 @@ const sendgrid = require('@sendgrid/mail');
 
 const { format } = require('date-fns');
 
+function formatDateToDB(date) {
+  return format(new Date(date), 'yyyy-MM-dd HH:mm:ss');
+}
+
 function generateError(message, code = 500) {
   const error = new Error(message);
   error.httpStatus = code;
@@ -23,4 +27,5 @@ function showDebug(message) {
 module.exports = {
   generateError,
   showDebug,
+  formatDateToDB,
 };
