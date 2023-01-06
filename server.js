@@ -3,18 +3,19 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-////const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const app = express();
 const port = 8080;
 
 // Notes controllers
+const noteExists = require('./controllersNotes/notesExists');
 /* /* const noteExists = require('./controllersNotes/notesExists');
 const listNotes = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
 const newNote = require('./controllersNotes/newNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-const publicNote = require('./controllersNotes/publicNote'); */
+const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
 /* const getCategory = require('./controllersCategory/getCategory');
@@ -40,9 +41,9 @@ const loginUser = require('./controllersUser/loginUser');
 app.use(cors());
 
 // Log de peticiones a la consola
-/* if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-} */
+}
 app.use(morgan('dev'));
 
 // parse application/x-www-form-urlencoded
@@ -54,8 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Procesado de body tipo form-data
-//app.use(fileUpload());
-//app.use(fileUpload());
+app.use(fileUpload());
 
 /*
   ENDPOINTS DE NOTAS
@@ -90,13 +90,13 @@ app.use(express.json());
 // Añadir una imagen a una nota
 // POST /notes/:id/images
 // Solo usuario que crear esta nota
-//app.post('/notes/:id/images', isUser, noteExists, uploadNoteImage);
+app.post('/notes/:id/images', noteExists, uploadNoteImage);
 
 ////extra - no pedido????//////////////
 // Borrar una imagen de una nota
 // DELETE /notes/:id/images/:imageID
 // Solo usuario que creo esa nota
-//app.delete('/notes/:id/images/:imageID', isUser, noteExists, deleteNoteImage);
+app.delete('/notes/:id/images/:imageID', noteExists, deleteNoteImage);
 
 // extra
 // Borrar una nota
@@ -117,26 +117,22 @@ app.use(express.json());
 // extra - Crear una nueva categoria
 // get - /category
 // Sólo usuarios registrados
-////app.get('/category', isUser, getCategory);
 app.get('/category/:id', getCategory);
 
 // extra - Crear una nueva categoria
 // POST - /category
 // Sólo usuarios registrados
-////app.post('/category', isUser, categoryExists, newCategory);
 app.post('/category', categoryNoExists, newCategory);
 
 // extra - Editar categorias
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota "o admin"
-////app.put('/category/:id', isUser, categoryExists, editCategory);
 app.put('/category/:id', categoryExists, editCategory);
 
 // extra
 // Borrar una categoría
 // DELETE - /category/:id
 // Sólo usuario
-////app.delete('/category/:id', isUser, categoryExists, deleteCategory);
 app.delete('/category/:id', categoryExists, deleteCategory);
 
 /*
@@ -147,10 +143,12 @@ app.delete('/category/:id', categoryExists, deleteCategory);
 // POST - /users
 // Público
 app.post('/users', newUser);
+app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
 // Público
+app.post('/users/login', loginUser);
 app.post('/users/login', loginUser);
 
 // Middlewares finales

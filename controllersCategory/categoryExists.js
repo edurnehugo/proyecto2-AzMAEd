@@ -9,16 +9,16 @@ const categoryExists = async (req, res, next) => {
   let connection;
   try {
     connection = await getConnection();
-    const { user_id, title } = req.body;
+    const { id } = req.body;
 
     // Comprobar que la categoria existe en la base de datos
     const [current] = await connection.query(
       `
-    SELECT id
+    SELECT id 
     FROM category
-    WHERE user_id=? and title like ? 
+    WHERE id = ? 
   `,
-      [user_id, title]
+      [id]
     );
 
     if (current.length > 0) {
@@ -27,7 +27,7 @@ const categoryExists = async (req, res, next) => {
     } else {
       console.log('la categoria no existe');
       throw generateError(
-        `La categoria con title ${title} que requiere no existe en la base de datos`,
+        `La categoria que requiere no existe en la base de datos`,
         404
       );
     }
