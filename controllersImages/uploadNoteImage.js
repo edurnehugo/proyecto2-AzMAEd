@@ -1,18 +1,26 @@
 const { getConnection } = require('../db/db');
-const { processAndSaveImage, generateError } = require('./../helpers2');
+const {
+  processAndSaveImage,
+  generateError,
+  createPathIfNotExists,
+} = require('./../helpers2');
+const path = require('path');
+const sharp = require('sharp');
+const { nanoid } = require('nanoid');
 
-async function uploadEntryImage(req, res, next) {
+
+async function uploadNoteImage(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
 
     const { id } = req.params;
 
-    // Comprobar que el usuario puede actualizar las imagenes de la entrda
+    // Comprobar que el usuario puede actualizar la imagen de la entrada
     // Seleccionar la entrada de la nota con la id
-    const [current] = await connection.query(
+    const [result] = await connection.query(
       `
-        SELECT user_id
+        SELECT *
         FROM notes
         WHERE id=?
       `,
@@ -20,13 +28,42 @@ async function uploadEntryImage(req, res, next) {
     );
 
     // Comprobar que el usuario puede editar esta entrada
-    const [currentNote] = current;
 
-    if (currentNote.user_id !== req.auth.id && req.auth.role !== 'user') {
+    if (result.user_id !== req.auth.id) {
       throw generateError('No tienes permisos para editar esta nota', 403);
     }
 
-    // Comprobar que la entrada tenga solo 1 imagen asociada
+    let imageFileName;
+
+    if (req.files && req.files.image) {
+      // Creo el path del directorio uploads
+      const uploadsDir = path.join(__dirname, '../uploads');
+
+      // Creo el directorio si no existe
+      await createPathIfNotExists(uploadsDir);
+
+      // Procesar la imagen
+      const image = sharp(req.files.image.data);
+      image.resize(1000);
+
+      // Guardo la imagen con un nombre aleatorio en el directorio uploads
+      imageFileName = `${nanoid(24)}.jpg`;
+
+      await image.toFile(path.join(uploadsDir, imageFileName));
+    }
+
+    const upload  = await uploadImagen (req.userId, imageFileName) = {
+      
+    }
+
+    };
+
+    res.send({
+      status: 'ok',
+      message: `Tweet con id: ${id} creado correctamente`,
+    });
+
+    // Comprobar que la entrada ya tiene imagen asociada
     const [images] = await connection.query(
       `
       SELECT id
@@ -76,4 +113,45 @@ async function uploadEntryImage(req, res, next) {
   }
 }
 
-module.exports = uploadEntryImage;
+module.exports = uploadNoteImage;
+
+/* 
+const newTweetController = async (req, res, next) => {
+  try {
+    const { text } = req.body;
+
+    if (!text || text.length > 280) {
+      throw generateError(
+        'El texto del tweet debe existir y ser menor de 280 caracteres',
+        400
+      );
+    }
+    let imageFileName;
+
+    if (req.files && req.files.image) {
+      // Creo el path del directorio uploads
+      const uploadsDir = path.join(__dirname, '../uploads');
+
+      // Creo el directorio si no existe
+      await createPathIfNotExists(uploadsDir);
+
+      // Procesar la imagen
+      const image = sharp(req.files.image.data);
+      image.resize(1000);
+
+      // Guardo la imagen con un nombre aleatorio en el directorio uploads
+      imageFileName = `${nanoid(24)}.jpg`;
+
+      await image.toFile(path.join(uploadsDir, imageFileName));
+    }
+
+    const id = await createTweet(req.userId, text, imageFileName);
+
+    res.send({
+      status: 'ok',
+      message: `Tweet con id: ${id} creado correctamente`,
+    });
+  } catch (error) {
+    next(error);
+  }
+}; */

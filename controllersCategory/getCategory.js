@@ -7,11 +7,12 @@ const getCategory = async (req, res, next) => {
   try {
     connection = await getConnection();
 
-    const { user_id } = req.body;
+    const { id } = req.auth;
+    const user_id = id;
 
     const result = await connection.query(
       `
-    SELECT *
+    SELECT title
     FROM category
     WHERE user_id=?
     `,
@@ -29,12 +30,6 @@ const getCategory = async (req, res, next) => {
       status: 'ok',
       data: result[0],
     });
-    //return res.send(result[0]);
-
-    /*    res.send({
-      status: 'ok',
-      data: { result[0]},
-    }); */
   } catch (error) {
     next(error);
   } finally {

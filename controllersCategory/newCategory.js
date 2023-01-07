@@ -1,9 +1,11 @@
+//const { token } = require('morgan');
 const { getConnection } = require('../db/db');
 //const { generateError } = require('../helpers2');
 const { categorySchema } = require('../validators/categoryValidators');
 
 const newCategory = async (req, res, next) => {
   let connection;
+
   console.log('newcategory, introduce nueva categoria ');
   try {
     connection = await getConnection();
@@ -11,8 +13,10 @@ const newCategory = async (req, res, next) => {
     await categorySchema.validateAsync(req.body);
 
     // Sacar de req.body los datos que necesito
-    const { title, user_id } = req.body;
+    const { title } = req.body;
+    const { id } = req.auth;
 
+    const user_id = id;
     // Ejecutar la query
     const [result] = await connection.query(
       `
@@ -22,7 +26,6 @@ const newCategory = async (req, res, next) => {
       [title, user_id]
     );
 
-    console.log(result);
     // Devolver el resultado
 
     return res.send({

@@ -8,7 +8,6 @@ const newUser = async (req, res, next) =>{
 let connection;
 
   try {
-
     connection = await getConnection();
 
     await newUserSchema.validateAsync(req.body);
@@ -16,7 +15,8 @@ let connection;
     const { email, password, name, surname } = req.body;
 
     // comprobar que no existe un usuario con ese mismo email en la base de datos
-    const [existingUser] = await connection.query(`
+    const [existingUser] = await connection.query(
+      `
       SELECT id 
       FROM user
       WHERE email=?`,
@@ -26,7 +26,7 @@ let connection;
   
      if (existingUser.length > 0) {
       throw generateError(
-        "Ya existe un usuario en la base de datos con ese email",
+        'Ya existe un usuario en la base de datos con ese email',
         409
       );
       }
@@ -66,19 +66,14 @@ let connection;
       }
 
     res.send({
-      status: "ok",
-      message:
-        "Usuario registrado.",
+      status: 'ok',
+      message: 'Usuario registrado.',
     });
-  }catch (error) {
+  } catch (error) {
     next(error);
   } finally {
     if (connection) connection.release();
   }
-}       
-      
-      
-   
-
+};
 
 module.exports = newUser;

@@ -37,6 +37,7 @@
 {
   "devDependencies": {
     "eslint": "^8.31.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.8.1"
   },
   "dependencies": {
@@ -53,14 +54,12 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
-    "nodemon": "^2.0.20",
     "sharp": "^0.31.3",
-    "uuid": "^8.1.0",
-    "mysql2": "^2.3.3",
-    "sharp": "^0.31.2",
     "uuid": "^8.1.0"
   },
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "name": "proyecto2_azmaed",
@@ -71,7 +70,7 @@
     "type": "git",
     "url": "git+https://github.com/edurnehugo/proyecto2_AzMAEd.git"
   },
-  "author": "",
+  "author": "Azahara Urosas, Marc García, Edurne Huertos",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/edurnehugo/proyecto2_AzMAEd/issues"
