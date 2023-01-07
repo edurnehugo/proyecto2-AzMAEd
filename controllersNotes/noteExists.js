@@ -1,4 +1,4 @@
-const { getConnection } = require('../db');
+const { getConnection } = require('../db/db');
 const { showDebug, generateError } = require('../helpers');
 
 const noteExists = async (req, res, next) => {
@@ -14,11 +14,10 @@ const noteExists = async (req, res, next) => {
       `,
       [user_id, title]
     );
-    if (current.length === 1) {
-      throw generateError(`La nota con título ${title} ya existe`, 404);
-    } else {
-      next();
+    if (current.length === 0) {
+      throw generateError(`La nota con título ${title} no existe`, 404);
     }
+    next();
   } catch (error) {
     showDebug(error);
     next(error);

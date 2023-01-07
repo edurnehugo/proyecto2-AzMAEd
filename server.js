@@ -8,8 +8,8 @@ const morgan = require('morgan');
 const app = express();
 
 // Notes controllers
-//sconst noteExists = require('./controllersNotes/notesExists');
-const listNotes = require('./controllersNotes/listNotes');
+const noteExists = require('./controllersNotes/noteExists');
+const listNote = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
 const createNote = require('./controllersNotes/createNote');
 const editNote = require('./controllersNotes/editNote');
@@ -61,12 +61,12 @@ app.use(express.json());
 // Listar todas las notas del usuario - solo titulos
 // GET - /notes
 // Privado
-app.get('/notes', listNotes);
+app.get('/notes/:id', listNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 // Privado
-app.get('/notes/:id', getNote);
+app.get("/notes/:id', getNote");
 
 // Mostrar una sola nota
 // GET - /notes/:id

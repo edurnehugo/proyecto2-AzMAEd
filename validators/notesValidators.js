@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const { generateError } = require('../helpers');
 
 // Valida nueva entrada en el diario
