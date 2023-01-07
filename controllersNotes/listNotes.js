@@ -1,17 +1,27 @@
-const { getConnection } = require('../db');
-const { showDebug } = require('../helpers');
+const { getConnection } = require('../db/db');
+const { showDebug, generateError } = require('../helpers');
 
-async function listNotes(req, res, next) {
-  const connection = await getConnection();
+const listNotes = async (req, res, next) => {
+  let connection;
   try {
-    let results = await connection.query('SELECT * FROM notes');
-    res.json(results);
+    connection = await getConnection();
+    const { user_id } = req.body;
+    let [results] = await connection.query(
+      'SELECT title FROM notes WHERE user_id=?',
+      [user_id]
+    );
+
+    if (results.lenght === 0) {
+      throw generateError(`El usuario ${user_id} no tiene notas.`);
+    }
+    res.send(results[0]);
   } catch (error) {
     showDebug(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    next(error);
+  } finally {
+    if (connection) connection.release();
   }
-  connection.release();
-}
+};
 
 module.exports = {
   listNotes,

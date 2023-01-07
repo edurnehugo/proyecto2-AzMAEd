@@ -1,22 +1,24 @@
-const { getConnection } = require('../db');
-//const { exec } = require ("child_process");
+const { getConnection } = require('../db/db');
 const { showDebug } = require('../helpers');
 
-async function createNote(req, res, next) {
-  const connection = await getConnection();
+const createNote = async (req, res, next) => {
+  let connection;
   try {
-    const { title, text, place } = req.body;
-    const row = await connection.query(
-      'INSERT INTO notes (title, text, place) VALUES (?,?,?)',
-      [title, text, place]
+    connection = await getConnection();
+    const { title, text, place, user_id, category_id } = req.body;
+    const [row] = await connection.query(
+      'INSERT INTO notes (title, text, place, user_id, category_id, date) VALUES (?,?,?,?,?, UTC_TIMESTAMP)',
+
+      [title, text, place, user_id, category_id]
     );
-    res.json(row);
+    res.send(row[0]);
   } catch (error) {
     showDebug(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    next(error);
+  } finally {
+    if (connection) connection.release();
   }
-  connection.release();
-}
+};
 
 module.exports = {
   createNote,

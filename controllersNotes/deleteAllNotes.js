@@ -1,20 +1,40 @@
-const { getConnection } = require('../db');
-//const { exec } = require ("child_process");
-const { showDebug } = require('../helpers');
+const { getConnection } = require('../db/db');
+const { showDebug, generateError } = require('../helpers');
 
-async function deleteAllNotes(req, res, next) {
+const deleteAllNotes = async (req, res, next) => {
+  let connection;
   try {
-    const { connection } = await getConnection();
+    connection = await getConnection();
+    const { user_id } = req.body;
+    const [current] = await connection.query(
+      `
+      SELECT user_id
+      FROM notes 
+      WHERE user_id=?
+      `,
+      [user_id]
+    );
 
-    await connection.query('DELETE FROM notes');
-    res.status(200).send();
-    showDebug('Delete All Notes');
-  } catch (err) {
-    console.error(err);
-    next(err);
+    if (current[0].user_id !== req.auth.id) {
+      throw generateError('No tienes permisos para borrar esta entrada');
+    }
+    await connection.query(
+      `DELETE * 
+      FROM notes`
+    );
+    res.send({
+      response: 'Notas borradas',
+    });
+  } catch (error) {
+    showDebug(error);
+    next(error);
   } finally {
-    connection.end();
+    if (connection) {
+      await connection.release();
+    }
   }
-}
+};
 
-module.exports = { deleteAllNotes };
+module.exports = {
+  deleteAllNotes,
+};

@@ -10,8 +10,8 @@ async function main() {
     connection = await getConnection();
 
     //Crear la BBDD
-    await connection.query('CREATE DATABASE if not exists notesForMe');
-    await connection.query('USE notesForMe;');
+    await connection.query('CREATE DATABASE if not exists notesforme');
+    await connection.query('USE notesforme');
 
     // Borrar las tablas si existen
 
@@ -66,15 +66,6 @@ async function main() {
         FOREIGN KEY (user_id) references user (id)
         )
         `);
-
-    //console.log("Creando usuario administrador");
-
-    //await connection.query(
-    // `
-    //INSERT INTO user(registrationDate, email, password, name, surname)
-    //VALUES(UTC_TIMESTAMP, "berto@ber.to", SHA2("${process.env.DEFAULT_ADMIN_PASSWORD}", 512), "Berto Yáñez", true, UTC_TIMESTAMP, UTC_TIMESTAMP)
-    //`
-    //);
   } catch (error) {
     console.error(error);
   } finally {

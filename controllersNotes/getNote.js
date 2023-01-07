@@ -1,22 +1,27 @@
-const { getConnection } = require('../db');
+const { getConnection } = require('../db/db');
 const { showDebug } = require('../helpers');
 
-async function getNote(req, res, next) {
-  const { note } = req.body;
-  showDebug('getNote', { note });
+const getNote = async (req, res, next) => {
+  let connection;
 
   try {
-    const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM notes WHERE id=?', [
-      note,
-    ]);
-    showDebug('getNote', { result });
-    res.status(200).json(result[0]);
+    connection = await getConnection();
+    const { user_id } = req.params;
+    const [result] = await connection.query(
+      `SELECT note 
+      FROM notes 
+      WHERE user_id = ?
+      `,
+      [user_id]
+    );
+    res.send(result);
   } catch (error) {
-    console.log(error);
+    showDebug(error);
     next(error);
+  } finally {
+    if (connection) connection.release();
   }
-}
+};
 
 module.exports = {
   getNote,
