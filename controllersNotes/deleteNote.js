@@ -1,42 +1,70 @@
 const { getConnection } = require('../db/db');
-const { showDebug, generateError } = require('../helpers');
+const { generateError } = require('../helpers');
 
-const deleteNote = async (req, res, next) => {
+const getNoteById = async (id) => {
   let connection;
+
   try {
     connection = await getConnection();
-    const { user_id } = req.body;
-    const [current] = await connection.query(
+
+    const [result] = await connection.query(
       `
-      SELECT user_id
-      FROM notes 
-      WHERE user_id=?
-      `,
-      [user_id]
+      SELECT * FROM notes WHERE id = ?
+    `,
+      [id]
     );
 
-    if (current[0].user_id !== req.auth.id) {
-      throw generateError('No tienes permisos para borrar esta entrada');
+    if (result.length === 0) {
+      throw generateError(`La nota con id: ${id} no existe`, 404);
     }
-    await connection.query(
-      `
-DELETE FROM notes
-WHERE user_id=?
-`,
-      [user_id]
-    );
-    res.send({
-      status: 'ok',
-      message: `La nota con id: ${user_id} fue borrada`,
-    });
-  } catch (error) {
-    showDebug(error);
-    next(error);
+    console.log(result[0]);
+
+    return result[0];
   } finally {
     if (connection) connection.release();
   }
 };
 
-module.exports = {
-  deleteNote,
+const deteleNoteById = async (id) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    await connection.query(
+      `
+      DELETE FROM notes WHERE id = ?
+    `,
+      [id]
+    );
+
+    return;
+  } finally {
+    if (connection) connection.release();
+  }
 };
+
+const deleteNote = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const notes = await getNoteById(id);
+
+    if (req.auth.id !== notes.user_id) {
+      throw generateError(`No tienes permisos para borrar esta nota`, 403);
+    }
+
+    await deteleNoteById(id);
+
+    // Devolver resultados
+    res.send({
+      status: 'ok',
+      message: `La nota con id: ${id} y title: ${notes.title} fue borrada`,
+    });
+  } catch (error) {
+    console.log('Error al borrar la nota:', error);
+    next(error);
+  }
+};
+
+module.exports = deleteNote;

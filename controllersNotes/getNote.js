@@ -6,13 +6,14 @@ const getNote = async (req, res, next) => {
 
   try {
     connection = await getConnection();
-    const { user_id } = req.params;
+    const { id } = req.params;
+    const user_id = req.auth.id;
     const [result] = await connection.query(
-      `SELECT note 
+      `SELECT * 
       FROM notes 
-      WHERE user_id = ?
+      WHERE user_id = ? AND id=?
       `,
-      [user_id]
+      [user_id, id]
     );
     res.send(result);
   } catch (error) {
@@ -23,6 +24,4 @@ const getNote = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getNote,
-};
+module.exports = getNote;

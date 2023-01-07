@@ -8,34 +8,34 @@ const morgan = require('morgan');
 const app = express();
 
 // Notes controllers
-const noteExists = require('./controllersNotes/noteExists');
+//const noteExists = require('./controllersNotes/noteExists');
 const listNote = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
 const createNote = require('./controllersNotes/createNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-const deleteAllNotes = require('./controllersNotes/deleteAllNotes');
+//const deleteAllNotes = require('./controllersNotes/deleteAllNotes');
 //const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
 
-/* const getCategory = require('./controllersCategory/getCategory');
-const editCategory = require('./controllersCategory/editCategory');
-const newCategory = require('./controllersCategory/newCategory');
-const categoryExists = require('./controllersCategory/categoryExists');
-const deleteCategory = require('./controllersCategory/deleteCategory');
+//const getCategory = require('./controllersCategory/getCategory');
+//const editCategory = require('./controllersCategory/editCategory');
+//const newCategory = require('./controllersCategory/newCategory');
+//const categoryExists = require('./controllersCategory/categoryExists');
+//const deleteCategory = require('./controllersCategory/deleteCategory');
 
 // Imagenes
-const uploadNoteImage = require('./controllersImages/uploadNoteImage');
+//const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 //extra-no pedido ////////////
-const deleteNoteImage = require('./controllersImages/deleteNoteImage');
+//const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
 const isUser = require('./controllersUser/isUser');
 // admin controllers
-const isAdmin = require('./controllersAdmin/isAdmin'); */
+//const isAdmin = require('./controllersAdmin/isAdmin');
 
 // Middlewares iniciales
 
@@ -61,27 +61,27 @@ app.use(express.json());
 // Listar todas las notas del usuario - solo titulos
 // GET - /notes
 // Privado
-app.get('/notes/:id', listNote);
+app.get('/notes', isUser, listNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 // Privado
-app.get("/notes/:id', getNote");
+app.get('/notes/:id', isUser, getNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 //********  Pública ????? *********
-app.get('/notes/:id', getNote);
+app.get('/notes/:id', isUser, getNote);
 
 // Crear una nueva Nota
 // POST - /notes
 // Sólo usuarios registrados
-app.post('/notes', createNote);
+app.post('/notes', isUser, createNote);
 
 // Editar una nota * put o pach * (Sólo los datos que no sean images)
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota
-app.put('/notes/:id', noteExists, editNote);
+app.put('/notes/:id', isUser, editNote);
 
 // extra
 // Añadir una imagen a una nota
@@ -99,13 +99,13 @@ app.put('/notes/:id', noteExists, editNote);
 // Borrar una nota
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
-app.delete('/notes/:id', noteExists, deleteNote);
+app.delete('/notes/:id', isUser, deleteNote);
 
 // extra
 // Borrar todas las notas
 // DELETE - /notes/:id
 // Sólo usuario que creó estas notas
-app.deleteAllNotes('/notes/:id', noteExists, deleteAllNotes);
+//app.delete('/notes/:id', noteExists, deleteAllNotes);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public
@@ -145,12 +145,12 @@ app.deleteAllNotes('/notes/:id', noteExists, deleteAllNotes);
 // Registro de usuarios
 // POST - /users
 // Público
-//app.post('/users', newUser);
+app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
 // Público
-//app.post('/users/login', loginUser);
+app.post('/users/login', loginUser);
 
 // Middlewares finales
 

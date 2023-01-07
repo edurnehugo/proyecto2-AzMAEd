@@ -29,6 +29,4 @@ const listNote = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  listNote,
-};
+module.exports = listNote;

@@ -26,6 +26,4 @@ const noteExists = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  noteExists,
-};
+module.exports = noteExists;

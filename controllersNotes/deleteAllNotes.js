@@ -1,4 +1,4 @@
-const { getConnection } = require('../db/db');
+/* const { getConnection } = require('../db/db');
 const { showDebug, generateError } = require('../helpers');
 
 const deleteAllNotes = async (req, res, next) => {
@@ -6,6 +6,8 @@ const deleteAllNotes = async (req, res, next) => {
   try {
     connection = await getConnection();
     const { user_id } = req.body;
+    const { id } = req.auth;
+    const user_id = id;
     const [current] = await connection.query(
       `
       SELECT user_id
@@ -35,6 +37,5 @@ const deleteAllNotes = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  deleteAllNotes,
-};
+module.exports = deleteAllNotes;
+ */
