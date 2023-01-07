@@ -32,10 +32,7 @@ const editEntrySchema = Joi.object().keys({
         400
       )
     ),
-  text: Joi.string()
-    .max(10000)
-    .required()
-    .error(generateError('El campo text debe existir', 400)),
+  text: Joi.string().max(10000),
   title: Joi.string()
     .min(3)
     .max(100)
