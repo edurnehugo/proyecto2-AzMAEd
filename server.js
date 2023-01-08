@@ -8,7 +8,7 @@ const app = express();
 const port = 8080;
 
 // Notes controllers
-/* const noteExists = require('./controllersNotes/notesExists');
+/* 
 const listNotes = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
 const newNote = require('./controllersNotes/newNote');
@@ -17,17 +17,13 @@ const deleteNote = require('./controllersNotes/deleteNote');
 const publicNote = require('./controllersNotes/publicNote');*/
 
 // Category controllers
-const newCategory = require('./controllersCategory/newCategory');
+const newCategory = require('./controllersCategory/newCategory'); //ok
 const getCategory = require('./controllersCategory/getCategory'); //ok
-const editCategory = require('./controllersCategory/editCategory');
+const editCategory = require('./controllersCategory/editCategory'); //ok
 const deleteCategory = require('./controllersCategory/deleteCategory'); //ok
-//const categoryExists = require('./middlewareCategory/categoryExistsById');
-//const categoryLikeExists = require(`./middlewareCategory/categoryLikeExists`);
-
-//const categoryNoExists = require('./middlewareCategory/categoryNoExists');
 
 // Imagenes
-////const uploadNoteImage = require('./controllersImages/uploadNoteImage');
+const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 //extra-no pedido ////////////
 ////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
@@ -39,18 +35,10 @@ const isUser = require('./controllersUser/isUser');
 // Middlewares iniciales
 
 app.use(cors());
-
-// Log de peticiones a la consola
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-app.use(morgan('dev'));
-
-// Procesado de body tipo json
-app.use(express.json());
-
-// Procesado de body tipo form-data
 app.use(fileUpload());
+app.use(express.json());
+app.use(morgan('dev'));
+app.use('/uploads', express.static('./uploads'));
 
 /*
   ENDPOINTS DE NOTAS
@@ -85,24 +73,24 @@ app.use(fileUpload());
 // Añadir una imagen a una nota
 // POST /notes/:id/images
 // Solo usuario que crear esta nota
-//app.post('/notes/:id/images', noteExists, uploadNoteImage);
+app.post('/images/notes/:id', isUser, uploadNoteImage);
 
 ////extra - no pedido????//////////////
 // Borrar una imagen de una nota
 // DELETE /notes/:id/images/:imageID
 // Solo usuario que creo esa nota
-//app.delete('/notes/:id/images/:imageID', noteExists, deleteNoteImage);
+//app.delete('/notes/:id/images/:imageID', deleteNoteImage);
 
 // extra
 // Borrar una nota
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
-////app.delete('/notes/:id', isUser, isAdmin, noteExists, deleteNote);
+////app.delete('/notes/:id', isUser, isAdmin, deleteNote);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public
 // Sólo usuarios registrados  put???
-////app.patch('/note/:id/public', isUser, noteExists, publicNote);
+////app.patch('/note/:id/public', isUser,  publicNote);
 
 /*
   ENDPOINTS DE CATEGORIAS  *** extra ***

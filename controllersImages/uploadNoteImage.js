@@ -1,26 +1,22 @@
 const { getConnection } = require('../db/db');
-const {
-  processAndSaveImage,
-  generateError,
-  createPathIfNotExists,
-} = require('./../helpers2');
+const { generateError, checkExists } = require('./../helpers2');
 const path = require('path');
 const sharp = require('sharp');
 const { nanoid } = require('nanoid');
+const fs = require('fs/promises');
 
-
-async function uploadNoteImage(req, res, next) {
+const uploadNoteImage = async (req, res, next) => {
   let connection;
   try {
     connection = await getConnection();
 
     const { id } = req.params;
+    const user_id = req.auth.id;
 
-    // Comprobar que el usuario puede actualizar la imagen de la entrada
-    // Seleccionar la entrada de la nota con la id
-    const [result] = await connection.query(
+    // Comprobar que el usuario puede actualizas las imagenes de la entrda
+    const [current] = await connection.query(
       `
-        SELECT *
+        SELECT user_id
         FROM notes
         WHERE id=?
       `,
@@ -28,42 +24,11 @@ async function uploadNoteImage(req, res, next) {
     );
 
     // Comprobar que el usuario puede editar esta entrada
-
-    if (result.user_id !== req.auth.id) {
-      throw generateError('No tienes permisos para editar esta nota', 403);
+    if (current[0].user_id !== req.auth.id) {
+      throw generateError('No tienes permisos para editar esta entrada', 403);
     }
 
-    let imageFileName;
-
-    if (req.files && req.files.image) {
-      // Creo el path del directorio uploads
-      const uploadsDir = path.join(__dirname, '../uploads');
-
-      // Creo el directorio si no existe
-      await createPathIfNotExists(uploadsDir);
-
-      // Procesar la imagen
-      const image = sharp(req.files.image.data);
-      image.resize(1000);
-
-      // Guardo la imagen con un nombre aleatorio en el directorio uploads
-      imageFileName = `${nanoid(24)}.jpg`;
-
-      await image.toFile(path.join(uploadsDir, imageFileName));
-    }
-
-    const upload  = await uploadImagen (req.userId, imageFileName) = {
-      
-    }
-
-    };
-
-    res.send({
-      status: 'ok',
-      message: `Tweet con id: ${id} creado correctamente`,
-    });
-
-    // Comprobar que la entrada ya tiene imagen asociada
+    // Comprobar que la entrada tenga una imágen ya asociada
     const [images] = await connection.query(
       `
       SELECT id
@@ -74,33 +39,35 @@ async function uploadNoteImage(req, res, next) {
     );
 
     if (images.length > 0) {
-      throw generateError(
-        'No se puede subir imagenes a esta nota, borra la actual primero',
-        406
-      );
+      throw generateError('Esta nota ya tiene una imagen asociada', 406);
     }
 
-    // Subir la imagen
-    if (req.files && req.files.image) {
-      // Procesamos e insertamos imagen
-      try {
-        const processedImage = await processAndSaveImage(req.files.image);
-        await connection.query(
-          `
-          INSERT INTO images (uploadDate, nameFile, notes_id)
-          VALUES(UTC_TIMESTAMP, ?, ?)
-        `,
-          [processedImage, id]
-        );
-      } catch (error) {
-        console.log(`Error:`, error);
-        res
-          .status(400)
-          .send('No se pudo procesar la imagen. Inténtalo de nuevo');
-      }
-    } else {
-      throw generateError('No se subió una imagen', 400);
+    let nameFileUp;
+
+    const uploadsDir = path.join(__dirname, '../uploads');
+
+    const exists = await checkExists(uploadsDir);
+
+    if (!exists) {
+      await fs.mkdir(uploadsDir);
     }
+    //await createPathIfNotExists(uploadsDir);
+    console.log(req.files.image.data);
+    // Procesar la imagen
+    const image = sharp(req.files.image.data);
+    image.resize(1000);
+
+    nameFileUp = `${nanoid(24)}.jpg`;
+
+    await image.toFile(path.join(uploadsDir, nameFileUp));
+
+    await connection.query(
+      `
+          INSERT INTO images ( nameFile, notes_id, user_id)
+          VALUES( ?, ?, ?)
+        `,
+      [nameFileUp, id, user_id]
+    );
 
     res.send({
       status: 'ok',
@@ -111,47 +78,6 @@ async function uploadNoteImage(req, res, next) {
   } finally {
     if (connection) connection.release();
   }
-}
+};
 
 module.exports = uploadNoteImage;
-
-/* 
-const newTweetController = async (req, res, next) => {
-  try {
-    const { text } = req.body;
-
-    if (!text || text.length > 280) {
-      throw generateError(
-        'El texto del tweet debe existir y ser menor de 280 caracteres',
-        400
-      );
-    }
-    let imageFileName;
-
-    if (req.files && req.files.image) {
-      // Creo el path del directorio uploads
-      const uploadsDir = path.join(__dirname, '../uploads');
-
-      // Creo el directorio si no existe
-      await createPathIfNotExists(uploadsDir);
-
-      // Procesar la imagen
-      const image = sharp(req.files.image.data);
-      image.resize(1000);
-
-      // Guardo la imagen con un nombre aleatorio en el directorio uploads
-      imageFileName = `${nanoid(24)}.jpg`;
-
-      await image.toFile(path.join(uploadsDir, imageFileName));
-    }
-
-    const id = await createTweet(req.userId, text, imageFileName);
-
-    res.send({
-      status: 'ok',
-      message: `Tweet con id: ${id} creado correctamente`,
-    });
-  } catch (error) {
-    next(error);
-  }
-}; */
