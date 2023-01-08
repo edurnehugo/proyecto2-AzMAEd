@@ -8,13 +8,12 @@ const morgan = require('morgan');
 const app = express();
 
 // Notes controllers
-//const noteExists = require('./controllersNotes/noteExists');
 const listNote = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
+const getNotePublic = require('./controllersNotes/getNotePublic');
 const createNote = require('./controllersNotes/createNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-//const deleteAllNotes = require('./controllersNotes/deleteAllNotes');
 const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
@@ -69,7 +68,7 @@ app.get('/notes/:id', isUser, getNote);
 // Mostrar una sola nota
 // GET - /notes/:id
 //********  Pública ????? *********
-app.get('/notes/:id', isUser, getNote);
+app.get('/notes/public/:id', getNotePublic);
 
 // Crear una nueva Nota
 // POST - /notes
@@ -98,12 +97,6 @@ app.put('/notes/:id', isUser, editNote);
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
 app.delete('/notes/:id', isUser, deleteNote);
-
-// extra
-// Borrar todas las notas
-// DELETE - /notes/:id
-// Sólo usuario que creó estas notas
-//app.delete('/notes/:id', noteExists, deleteAllNotes);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public

@@ -9,9 +9,8 @@ const publicNote = async (req, res, next) => {
   try {
     connection = await getConnection();
     const booleanchi = req.body.private;
-    console.log(typeof booleanchi);
-    //undefined = false;
-    const validator = await editPrivateSchema.validateAsync(booleanchi);
+    console.log(booleanchi);
+    const validator = await editPrivateSchema?.validateAsync(booleanchi);
     console.log(validator);
 
     if (!Boolean) {
