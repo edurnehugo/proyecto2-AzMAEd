@@ -1,4 +1,4 @@
-const { getConnection } = require('../db/db');
+/* const { getConnection } = require('../db/db');
 const { showDebug, generateError } = require('../helpers');
 
 const noteExists = async (req, res, next) => {
@@ -26,4 +26,4 @@ const noteExists = async (req, res, next) => {
   }
 };
 
-module.exports = noteExists;
+module.exports = noteExists; */

@@ -15,7 +15,7 @@ const createNote = require('./controllersNotes/createNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
 //const deleteAllNotes = require('./controllersNotes/deleteAllNotes');
-//const publicNote = require('./controllersNotes/publicNote');
+const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
 
@@ -34,8 +34,6 @@ const deleteNote = require('./controllersNotes/deleteNote');
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
 const isUser = require('./controllersUser/isUser');
-// admin controllers
-//const isAdmin = require('./controllersAdmin/isAdmin');
 
 // Middlewares iniciales
 
@@ -110,7 +108,7 @@ app.delete('/notes/:id', isUser, deleteNote);
 // extra - marca una nota como pública
 // POST - /note/:id/public
 // Sólo usuarios registrados  put???
-//app.patch('/note/:id/public', isUser, noteExists, publicNote);
+app.put('/notes/public/:id', isUser, publicNote);
 
 /*
   ENDPOINTS DE CATEGORIAS  *** extra ***

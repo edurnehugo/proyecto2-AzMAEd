@@ -49,6 +49,7 @@ const deleteNote = async (req, res, next) => {
     const { id } = req.params;
 
     const notes = await getNoteById(id);
+    console.log(req.auth.id);
 
     if (req.auth.id !== notes.user_id) {
       throw generateError(`No tienes permisos para borrar esta nota`, 403);

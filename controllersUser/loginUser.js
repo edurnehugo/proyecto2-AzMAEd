@@ -1,6 +1,6 @@
-const { getConnection } = require("../db/db");
-const { generateError } = require("../helpers3");
-const jwt = require("jsonwebtoken");
+const { getConnection } = require('../db/db');
+const { generateError } = require('../helpers3');
+const jwt = require('jsonwebtoken');
 //const { loginUserSchema } = require("../validators/userValidators");
 
 async function loginUser(req, res, next) {
@@ -10,7 +10,7 @@ async function loginUser(req, res, next) {
     // comprobar que se reciben los datos necesarios
     //await loginUserSchema.validateAsync(req.body);
 
-    const { email, password} = req.body;
+    const { email, password } = req.body;
 
     // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
     const [dbUser] = await connection.query(
@@ -24,7 +24,7 @@ async function loginUser(req, res, next) {
 
     if (dbUser.length === 0) {
       throw generateError(
-        "No hay ningún usuario registrado con ese email o la contraseña es incorrecta",
+        'No hay ningún usuario registrado con ese email o la contraseña es incorrecta',
         401
       );
     }
@@ -34,15 +34,13 @@ async function loginUser(req, res, next) {
       //role: dbUser[0].role,
     };
 
-    const token = jwt.sign(tokenInfo, process.env.SECRET,
-       {
-      expiresIn: "30d",
+    const token = jwt.sign(tokenInfo, process.env.SECRET, {
+      expiresIn: '30d',
     });
 
     // Devolver el token
-    res.send(
-      {
-      status: "ok",
+    res.send({
+      status: 'ok',
       data: {
         token,
       },

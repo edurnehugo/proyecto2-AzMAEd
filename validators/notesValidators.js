@@ -56,8 +56,16 @@ const editEntrySchema = Joi.object().keys({
     .required()
     .error(generateError('El campo title debe existir', 400)),
 });
-
+const editPrivateSchema = Joi.object().keys({
+  private: Joi.boolean()
+    .required()
+    .truthy('yes')
+    .falsy('no')
+    .sensitive()
+    .error(generateError('El campo private debe existir', 400)),
+});
 module.exports = {
   newEntrySchema,
   editEntrySchema,
+  editPrivateSchema,
 };
