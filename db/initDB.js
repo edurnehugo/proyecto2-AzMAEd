@@ -36,10 +36,10 @@ async function main() {
           `);
 
        await connection.query(`
-       CREATE TABLE category (
+       CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         user_id INTEGER NOT NULL,
-        title varchar (150),
+        category varchar (150),
         FOREIGN KEY (user_id) references user (id)
               )
             `);
