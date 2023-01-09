@@ -1,13 +1,10 @@
 require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
-const fileUpload = require('express-fileupload');
 const app = express();
-const port = 8080;
-
+const port = 8888;
 
 // Notes controllers
 const listNote = require('./controllersNotes/listNotes');
@@ -30,7 +27,7 @@ const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 // User controllers
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
-const isUser = require('./controllersUser/isUser');
+const isUser = require('./middleware/isUser');
 
 // Middlewares iniciales
 
@@ -56,7 +53,7 @@ app.get('/notes/:id', isUser, getNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
-// Pública 
+// Pública
 app.get('/notes/public/:id', getNotePublic);
 
 // Crear una nueva Nota
@@ -71,15 +68,9 @@ app.put('/notes/:id', isUser, editNote);
 
 // extra
 // Añadir una imagen a una nota
-// POST /notes/:id/images
+// POST /images/notes/:id
 // Solo usuario que crear esta nota
 app.post('/images/notes/:id', isUser, uploadNoteImage);
-
-////extra - no pedido????//////////////
-// Borrar una imagen de una nota
-// DELETE /notes/:id/images/:imageID
-// Solo usuario que creo esa nota
-//app.delete('/notes/:id/images/:imageID', deleteNoteImage);
 
 // extra
 // Borrar una nota
@@ -88,15 +79,15 @@ app.post('/images/notes/:id', isUser, uploadNoteImage);
 app.delete('/notes/:id', isUser, deleteNote);
 
 // extra - marca una nota como pública
-// POST - /note/:id/public
-// Sólo usuarios registrados  put???
+// POST - /note/public/:id
+// Sólo usuarios registrados
 app.put('/notes/public/:id', isUser, publicNote);
 
 /*
   ENDPOINTS DE CATEGORIAS  *** extra ***
 */
 
-// EXTRA CREAR - EDITA - BORRAR CATEGORIAS
+// EXTRA LISTAR CATEGORIAS
 // extra - Crear una nueva categoria
 // get - /category
 // Sólo usuarios registrados
@@ -109,7 +100,7 @@ app.post('/category', isUser, newCategory);
 
 // extra - Editar categorias
 // PUT - /notes/:id
-// Sólo usuario que creó esta nota "o admin"
+// Sólo usuario que creó esta nota
 app.put('/category/:id', isUser, editCategory);
 
 // extra
@@ -126,12 +117,10 @@ app.delete('/category/:id', isUser, deleteCategory);
 // POST - /users
 // Público
 app.post('/users', newUser);
-app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
 // Público
-app.post('/users/login', loginUser);
 app.post('/users/login', loginUser);
 
 // Middlewares finales
