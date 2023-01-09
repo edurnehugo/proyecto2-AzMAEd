@@ -5,22 +5,21 @@ const listNote = async (req, res, next) => {
   let connection;
   try {
     connection = await getConnection();
-    const { id } = req.params;
-    const user_id = id;
-    const results = await connection.query(
+    const user_id = req.auth.id;
+    const [results] = await connection.query(
       `SELECT title 
       FROM notes 
       WHERE user_id=?`,
       [user_id]
     );
-    console.log(results);
+
     if (results.lenght === 0) {
       throw generateError(`El usuario ${user_id} no tiene notas.`);
     }
     showDebug(results);
     res.send({
       status: 'ok',
-      data: results[0],
+      data: results,
     });
   } catch (error) {
     next(error);

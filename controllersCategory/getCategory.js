@@ -12,7 +12,7 @@ const getCategory = async (req, res, next) => {
 
     const result = await connection.query(
       `
-    SELECT title
+    SELECT category
     FROM categories
     WHERE user_id=?
     `,

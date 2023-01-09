@@ -30,7 +30,7 @@ const editCategory = async (req, res, next) => {
     if (result.length === 0) {
       console.log('la categoria que quiero editar no existe');
       throw generateError(
-        `La categoria title ${result[0].title} no existe en la base de datos`,
+        `La categoria ${result[0].category} no existe en la base de datos`,
         404
       );
     }
@@ -42,7 +42,7 @@ const editCategory = async (req, res, next) => {
     // Ejecutar la query de edición de la categoria
     await connection.query(
       `
-      UPDATE categories SET title=?
+      UPDATE categories SET category=?
       WHERE id=?
     `,
       [title, id]

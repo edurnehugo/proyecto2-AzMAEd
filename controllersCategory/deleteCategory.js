@@ -7,6 +7,17 @@ const getCategoryById = async (id) => {
   try {
     connection = await getConnection();
 
+    const [categoryNotes] = await connection.query(
+      `SELECT * FROM notes WHERE category_id=?`,
+      [id]
+    );
+
+    if (categoryNotes.length > 0) {
+      throw generateError(
+        `Elige una categoría que no esté asociada a ninugna nota`
+      );
+    }
+
     const [result] = await connection.query(
       `
       SELECT * FROM categories WHERE id = ?
@@ -16,7 +27,6 @@ const getCategoryById = async (id) => {
     if (result.length === 0) {
       throw generateError(`La categoría con id: ${id} no existe`, 404);
     }
-    console.log(result[0]);
 
     return result[0];
   } finally {
@@ -61,7 +71,7 @@ const deleteCategory = async (req, res, next) => {
     // Devolver resultados
     res.send({
       status: 'ok',
-      message: `La categoría con id: ${id} y title: ${category.title} fue borrada`,
+      message: `La categoría con id: ${id} fue borrada`,
     });
   } catch (error) {
     console.log('Error al borrar categoria:', error);

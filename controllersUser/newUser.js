@@ -47,7 +47,7 @@ const newUser = async (req, res, next) => {
 
     const [catResult] = await connection.query(
       `INSERT INTO categories
-       (title, user_id) VALUES 
+       (category, user_id) VALUES 
       ( 'viajes', "${user_id}"),
       ('compras', "${user_id}"),
       ( 'evento', "${user_id}"),

@@ -15,11 +15,10 @@ async function loginUser(req, res, next) {
 
     // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
     const [dbUser] = await connection.query(
-      `SELECT id
+      `SELECT *
       FROM user
-      WHERE email=? 
-      AND password=?`,
-      [email, password]
+      WHERE email=?`,
+      [email]
     );
 
     if (dbUser.length === 0) {
@@ -42,7 +41,6 @@ async function loginUser(req, res, next) {
     // Generar token con información del usuario
     const tokenInfo = {
       id: dbUser[0].id,
-      //role: dbUser[0].role,
     };
 
     const token = jwt.sign(tokenInfo, process.env.SECRET, {

@@ -29,7 +29,6 @@ async function isUser(req, res, next) {
 
     // Meter ese contenido en el objeto de petición para futuro uso
     req.auth = tokenInfo;
-    console.log(tokenInfo);
 
     // Pasar al siguiente middleware
     next();

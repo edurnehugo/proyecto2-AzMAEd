@@ -66,11 +66,10 @@ app.post('/notes', isUser, createNote);
 // Sólo usuario que creó esta nota
 app.put('/notes/:id', isUser, editNote);
 
-// extra
-// Añadir una imagen a una nota
-// POST /images/notes/:id
-// Solo usuario que crear esta nota
-app.post('/images/notes/:id', isUser, uploadNoteImage);
+// extra - marca una nota como pública
+// POST - /note/public/:id
+// Sólo usuarios registrados
+app.put('/notes/public/:id', isUser, publicNote);
 
 // extra
 // Borrar una nota
@@ -78,10 +77,11 @@ app.post('/images/notes/:id', isUser, uploadNoteImage);
 // Sólo usuario que creó esta nota
 app.delete('/notes/:id', isUser, deleteNote);
 
-// extra - marca una nota como pública
-// POST - /note/public/:id
-// Sólo usuarios registrados
-app.put('/notes/public/:id', isUser, publicNote);
+// extra
+// Añadir una imagen a una nota
+// POST /images/notes/:id
+// Solo usuario que crear esta nota
+app.post('/images/notes/:id', isUser, uploadNoteImage);
 
 /*
   ENDPOINTS DE CATEGORIAS  

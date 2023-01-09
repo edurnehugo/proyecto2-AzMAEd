@@ -22,6 +22,9 @@ const uploadNoteImage = async (req, res, next) => {
       `,
       [id]
     );
+    if (current.length === 0) {
+      throw generateError('Esta nota no existe', 406);
+    }
 
     // Comprobar que el usuario puede editar esta entrada
     if (current[0].user_id !== req.auth.id) {
