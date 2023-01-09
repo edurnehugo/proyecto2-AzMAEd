@@ -1,4 +1,4 @@
-const { getConnection } = require('../db/db');
+/* const { getConnection } = require('../db/db');
 const { generateError, deleteUpload } = require('./../helpers2');
 
 async function deleteNoteImage(req, res, next) {
@@ -63,3 +63,4 @@ async function deleteNoteImage(req, res, next) {
 }
 
 module.exports = deleteNoteImage;
+ */
