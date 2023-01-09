@@ -16,10 +16,10 @@ const deleteNote = require('./controllersNotes/deleteNote');
 const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
-const newCategory = require('./controllersCategory/newCategory'); //ok
-const getCategory = require('./controllersCategory/getCategory'); //ok
-const editCategory = require('./controllersCategory/editCategory'); //ok
-const deleteCategory = require('./controllersCategory/deleteCategory'); //ok
+const newCategory = require('./controllersCategory/newCategory');
+const getCategory = require('./controllersCategory/getCategory');
+const editCategory = require('./controllersCategory/editCategory');
+const deleteCategory = require('./controllersCategory/deleteCategory');
 
 // Imagenes
 const uploadNoteImage = require('./controllersImages/uploadNoteImage');
@@ -66,11 +66,10 @@ app.post('/notes', isUser, createNote);
 // Sólo usuario que creó esta nota
 app.put('/notes/:id', isUser, editNote);
 
-// extra
-// Añadir una imagen a una nota
-// POST /images/notes/:id
-// Solo usuario que crear esta nota
-app.post('/images/notes/:id', isUser, uploadNoteImage);
+// extra - marca una nota como pública
+// POST - /note/public/:id
+// Sólo usuarios registrados
+app.put('/notes/public/:id', isUser, publicNote);
 
 // extra
 // Borrar una nota
@@ -78,17 +77,17 @@ app.post('/images/notes/:id', isUser, uploadNoteImage);
 // Sólo usuario que creó esta nota
 app.delete('/notes/:id', isUser, deleteNote);
 
-// extra - marca una nota como pública
-// POST - /note/public/:id
-// Sólo usuarios registrados
-app.put('/notes/public/:id', isUser, publicNote);
+// extra
+// Añadir una imagen a una nota
+// POST /images/notes/:id
+// Solo usuario que crear esta nota
+app.post('/images/notes/:id', isUser, uploadNoteImage);
 
 /*
   ENDPOINTS DE CATEGORIAS  
 */
 
-// EXTRA LISTAR CATEGORIAS
-// extra - Crear una nueva categoria
+// extra - listar categorias
 // get - /category
 // Sólo usuarios registrados
 app.get('/category', isUser, getCategory);
@@ -103,8 +102,7 @@ app.post('/category', isUser, newCategory);
 // Sólo usuario que creó esta nota
 app.put('/category/:id', isUser, editCategory);
 
-// extra
-// Borrar una categoría
+// extra - Borrar una categoría
 // DELETE - /category/:id
 // Sólo usuario
 app.delete('/category/:id', isUser, deleteCategory);
@@ -115,12 +113,10 @@ app.delete('/category/:id', isUser, deleteCategory);
 
 // Registro de usuarios
 // POST - /users
-// Público
 app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
-// Público
 app.post('/users/login', loginUser);
 
 // Middlewares finales

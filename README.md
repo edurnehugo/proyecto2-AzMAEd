@@ -1,20 +1,24 @@
-# Notas de texto API
+# Notas de texto API - NotesForMe
 
 DESCRIPCIÓN
 
 Implementar una API que permita publicar notas privadas de texto y categorizarlas.
 
 Creación de una base de datos en donde se crean las tablas según la necesidad del usuario y la especificación del proyecto.
-Esta parte es la base del proyecto, ya que desde aquí los usuarios se dan de alta logeándose a la aplicación y se da forma al funcionamiento de la misma.
 
 Pasos iniciales para su puesta en marcha en un servidor local:
 
 - Iniciar con el código "node db/initDB.js" la base de datos de la API en MySQL Workbench.
 - Inciar la API con "node server.js".
 
-En la colección de PostMan se encuentrar todos los endpoints para empezar a trabajar con ella.
+En la colección de PostMan se encuentran todos los endpoints para empezar a trabajar con ella.
 
-A continuación se desarrolla el código necesario en VisualCode para esas bases de datos y se contrasta su funcionamiento usando los programas MySQL y PostMan
+Cuando se crea un usuario nuevo, automaticamente se crean cuatro categorias estandar.
+El usuario puede modificarlas en cualquier instante.
+
+A continuación se desarrolla el código necesario en VisualCode para esas bases de datos y se contrasta su funcionamiento usando los programas MySQL Workbench y PostMan
+
+La estructura del API diseñada, es la siguiente:
 
 NotesForMe
 
@@ -35,55 +39,52 @@ NotesForMe
   - tittle
   - text
   - place
-  - category_id??
-  - private (true o false) deafult true
+  - category_id
+  - private
   - date_created
 
 - Categories :
 
   - id
   - category
-  - User_id foreign key
-  - Notes_id foreign key ??
+  - User_id
+  - Notes_id
 
 - Images :
-  - Id
+
+  - id
   - nameFile
-  - Notes_id
+  - notes_id
   - uploadDate
 
 ## Endpoints
 
 - ENDPOINTS DE NOTAS
 
-  - \*\* APP.GET('/notes', listNotes); LISTAR NOTAS
-  - \*\* APP.GET('/notes/:id', isUser, getNote); VISUALIZAR UNA NOTA EN CONCRETO POR USUARIO
-  - \*\* APP.GET('/notes/:id', getNote); VISUALIZAR NOTA PUBLICA
-  - \*\* APP.POST('/notes', isUser, getCategory, newNote);
-  - \*\* APP.PUT('/notes/:id', isUser, noteExists, editNote);
-  - \*\* APP.POST('/notes/:id/images', isUser, noteExists, uploadNoteImage);
-  - \*\* APP.DELETE('/notes/:id/images/:imageID', isUser, noteExists, deleteNoteImage);
-  - \*\* APP.DELETE('/notes/:id', isUser, isAdmin, noteExists, deleteNote);
-  - \*\* APP.patch('/note/:id/public', isUser, noteExists, publicNote);
+  - APP.GET('/notes', isUser, listNote); LISTAR NOTAS 👍
+  - APP.GET('/notes/:id', isUser, getNote); VISUALIZAR UNA NOTA 👍
+  - APP.GET('/notes/public/:id', getNote); VISUALIZAR NOTA PUBLICA 👍
+  - APP.POST('/notes', isUser, createNote); CREAR NOTA 👍
+  - APP.PUT('/notes/:id', isUser, editNote); 👍
+  - APP.PUT('/note/:id/public', isUser, publicNote); HACER UNA NOTA PUBLICA 👍
+  - APP.DELETE('/notes/:id', isUser, deleteNote); BORRAR UNA NOTA 👍
+  - APP.POST('/notes/:id/images', isUser, uploadNoteImage); SUBIR UNA IMAGEN A UNA NOTA 👍
 
 - ENDPOINTS DE CATEGORIAS
 
-  - \*\* APP.GET('/category', isUser, getCategory);
-  - \*\* APP.POST('/category', isUser, categoryExists, newCategory);
-  - \*\* APP.PUT('/category/:id', isUser, categoryExists, editCategory);
-  - \*\* APP.DELETE('/category/:id', isUser, categoryExists, deleteCategory);
+  - APP.GET('/category', isUser, getCategory); LISTAR CATEGORIAS 👍
+  - APP.POST('/category', isUser, categoryExists, newCategory); CREAR CATEGORIAS 👍
+  - APP.PUT('/category/:id', isUser, categoryExists, editCategory); EDITAR CATEGORIAS 👍
+  - APP.DELETE('/category/:id', isUser, categoryExists, deleteCategory); BORRAR CATEGORIAS 👍
 
 - ENDPOINTS DE USUARIO
 
-- \*\* APP.POST('/users', newUser);
-- \*\* APP.POST('/users/login', loginUser);
-
-- MIDDELWARE
+  - APP.POST('/users', newUser); NUEVO USUARIO 👍
+  - APP.POST('/users/login', loginUser); LOGUEAR USUARIO 👍
 
 ## Anotaciones a la hora de realizar el proyecto
 
 - Además de los comunes como plantear el funcionamiento, las partes y la unión de las tablas, la mayor complicación fue la conexión de Visual con Postman, sobre todo por la necesidad de revisar el buen funcionamiento del código, ya que sin mi parte, a mis compañeros les resultaba más difícil avanzar en el suyo.
--
 
 - Problemas con Git con repositorio y a la hora de subir por ramas sobre todo el package-lock. Quiza se tenga que gestionar de manera conjunta y no individualmente.
 

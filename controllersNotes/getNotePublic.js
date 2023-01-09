@@ -8,9 +8,7 @@ const getNotePublic = async (req, res, next) => {
     connection = await getConnection();
     const { id } = req.params;
     const [result] = await connection.query(
-      `SELECT * 
-      FROM notes 
-      WHERE id=?
+      ` SELECT title, text, place, c.category, i.nameFile FROM notes n LEFT JOIN categories c on n.category_id = c.id LEFT JOIN images i on n.id = i.notes_id  WHERE n.id= ?;
       `,
       [id]
     );

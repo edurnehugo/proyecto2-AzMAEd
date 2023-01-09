@@ -18,7 +18,7 @@ async function main() {
 
     await connection.query('DROP TABLE IF EXISTS images');
     await connection.query('DROP TABLE IF EXISTS notes');
-    await connection.query('DROP TABLE IF EXISTS category');
+    await connection.query('DROP TABLE IF EXISTS categories');
     await connection.query('DROP TABLE IF EXISTS user');
 
     // Crear las tablas de nuevo
@@ -55,7 +55,7 @@ async function main() {
             user_id INTEGER NOT NULL,
             category_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) references user (id),
-            FOREIGN KEY (category_id) references category (id)
+            FOREIGN KEY (category_id) references categories (id)
             )
             `);
 
