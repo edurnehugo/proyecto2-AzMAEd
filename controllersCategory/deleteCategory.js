@@ -13,7 +13,6 @@ const getCategoryById = async (id) => {
     `,
       [id]
     );
-
     if (result.length === 0) {
       throw generateError(`La categoría con id: ${id} no existe`, 404);
     }

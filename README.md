@@ -35,9 +35,8 @@ NotesForMe
   - tittle
   - text
   - place
-  - category_id
-  - user_id
-  - private booleano deafult true
+  - category_id??
+  - private (true o false) deafult true
   - date_created
 
 - Categories :
@@ -45,7 +44,7 @@ NotesForMe
   - id
   - category
   - User_id foreign key
-  - Notes_id foreign key
+  - Notes_id foreign key ??
 
 - Images :
   - Id

@@ -1,11 +1,8 @@
-//const { token } = require('morgan');
 const { getConnection } = require('../db/db');
-//const { generateError } = require('../helpers2');
 const { categorySchema } = require('../validators/categoryValidators');
 
 const newCategory = async (req, res, next) => {
   let connection;
-
   console.log('newcategory, introduce nueva categoria ');
   try {
     connection = await getConnection();

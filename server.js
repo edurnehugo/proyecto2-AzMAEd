@@ -4,7 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const app = express();
+const port = 8080;
 const port = 8080;
 
 // Notes controllers
@@ -25,6 +27,7 @@ const deleteCategory = require('./controllersCategory/deleteCategory'); //ok
 // Imagenes
 const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 //extra-no pedido ////////////
+////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 ////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
@@ -53,20 +56,24 @@ app.use('/uploads', express.static('./uploads'));
 // GET - /notes/:id
 // Privado
 ////app.get('/notes/:id', isUser, getNote);
+////app.get('/notes/:id', isUser, getNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 //********  Pública ????? *********
+////app.get('/notes/:id', isUser, getNote);
 ////app.get('/notes/:id', isUser, getNote);
 
 // Crear una nueva Nota
 // POST - /notes
 // Sólo usuarios registrados
 ////app.post('/notes', isUser, getCategory, newNote);
+////app.post('/notes', isUser, getCategory, newNote);
 
 // Editar una nota * put o pach * (Sólo los datos que no sean images)
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota
+////app.put('/notes/:id', isUser, noteExists, editNote);
 ////app.put('/notes/:id', isUser, noteExists, editNote);
 
 // extra
@@ -126,10 +133,12 @@ app.delete('/category/:id', isUser, deleteCategory);
 // POST - /users
 // Público
 app.post('/users', newUser);
+app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
 // Público
+app.post('/users/login', loginUser);
 app.post('/users/login', loginUser);
 
 // Middlewares finales
@@ -143,15 +152,19 @@ app.use((error, req, res, next) => {
     message: error.message,
   });
 });
+});
 
 // Not found
+app.use((req, res) => {
 app.use((req, res) => {
   res.status(404).send({
     status: 'error',
     message: 'Not found',
   });
 });
+});
 
+//const port = 8888;
 //const port = 8888;
 
 app.listen(port, () => {
