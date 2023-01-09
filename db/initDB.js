@@ -36,10 +36,10 @@ async function main() {
           `);
 
        await connection.query(`
-       CREATE TABLE category (
+       CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         user_id INTEGER NOT NULL,
-        title varchar (150),
+        category varchar (150),
         FOREIGN KEY (user_id) references user (id)
               )
             `);
@@ -70,16 +70,6 @@ async function main() {
         )
         `);
         
-
-
-    //console.log("Creando usuario administrador");
-    
-    //await connection.query(
-        // `
-      //INSERT INTO user(registrationDate, email, password, name, surname)
-      //VALUES(UTC_TIMESTAMP, "berto@ber.to", SHA2("${process.env.DEFAULT_ADMIN_PASSWORD}", 512), "Berto Yáñez", true, UTC_TIMESTAMP, UTC_TIMESTAMP)
-    //`
-    //);
 
     
   } catch (error) {
