@@ -3,53 +3,45 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-//const fileUpload = require('express-fileupload');
-
+const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const app = express();
+const port = 8080;
+const port = 8080;
 
 // Notes controllers
-/* const noteExists = require('./controllersNotes/notesExists');
+/* 
 const listNotes = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
 const newNote = require('./controllersNotes/newNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-const publicNote = require('./controllersNotes/publicNote'); */
+const publicNote = require('./controllersNotes/publicNote');*/
 
 // Category controllers
-/* const getCategory = require('./controllersCategory/getCategory');
-const editCategory = require('./controllersCategory/editCategory');
-const newCategory = require('./controllersCategory/newCategory');
-const categoryExists = require('./controllersCategory/categoryExists');
-const deleteCategory = require('./controllersCategory/deleteCategory'); */
+const newCategory = require('./controllersCategory/newCategory'); //ok
+const getCategory = require('./controllersCategory/getCategory'); //ok
+const editCategory = require('./controllersCategory/editCategory'); //ok
+const deleteCategory = require('./controllersCategory/deleteCategory'); //ok
+
 // Imagenes
-//const uploadNoteImage = require('./controllersImages/uploadNoteImage');
+const uploadNoteImage = require('./controllersImages/uploadNoteImage');
 //extra-no pedido ////////////
-//const deleteNoteImage = require('./controllersImages/deleteNoteImage');
+////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
+////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
-//const isUser = require('./controllersUser/isUser');
-// admin controllers
-//const isAdmin = require('./controllersAdmin/isAdmin');
+const isUser = require('./controllersUser/isUser');
 
 // Middlewares iniciales
 
 app.use(cors());
-
-// Log de peticiones a la consola
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-// parse application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-
-// Procesado de body tipo json
+app.use(fileUpload());
 app.use(express.json());
-
-// Procesado de body tipo form-data
-//app.use(fileUpload());
+app.use(morgan('dev'));
+app.use('/uploads', express.static('./uploads'));
 
 /*
   ENDPOINTS DE NOTAS
@@ -58,50 +50,54 @@ app.use(express.json());
 // Listar todas las notas del usuario - solo titulos
 // GET - /notes
 // Privado
-//app.get('/notes', listNotes);
+////app.get('/notes/:id', listNotes);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 // Privado
-//app.get('/notes/:id', isUser, getNote);
+////app.get('/notes/:id', isUser, getNote);
+////app.get('/notes/:id', isUser, getNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 //********  Pública ????? *********
-//app.get('/notes/:id', isUser, getNote);
+////app.get('/notes/:id', isUser, getNote);
+////app.get('/notes/:id', isUser, getNote);
 
 // Crear una nueva Nota
 // POST - /notes
 // Sólo usuarios registrados
-//app.post('/notes', isUser, getCategory, newNote);
+////app.post('/notes', isUser, getCategory, newNote);
+////app.post('/notes', isUser, getCategory, newNote);
 
 // Editar una nota * put o pach * (Sólo los datos que no sean images)
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota
-//app.put('/notes/:id', isUser, noteExists, editNote);
+////app.put('/notes/:id', isUser, noteExists, editNote);
+////app.put('/notes/:id', isUser, noteExists, editNote);
 
 // extra
 // Añadir una imagen a una nota
 // POST /notes/:id/images
 // Solo usuario que crear esta nota
-//app.post('/notes/:id/images', isUser, noteExists, uploadNoteImage);
+app.post('/images/notes/:id', isUser, uploadNoteImage);
 
 ////extra - no pedido????//////////////
 // Borrar una imagen de una nota
 // DELETE /notes/:id/images/:imageID
 // Solo usuario que creo esa nota
-//app.delete('/notes/:id/images/:imageID', isUser, noteExists, deleteNoteImage);
+//app.delete('/notes/:id/images/:imageID', deleteNoteImage);
 
 // extra
 // Borrar una nota
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
-//app.delete('/notes/:id', isUser, isAdmin, noteExists, deleteNote);
+////app.delete('/notes/:id', isUser, isAdmin, deleteNote);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public
 // Sólo usuarios registrados  put???
-//app.patch('/note/:id/public', isUser, noteExists, publicNote);
+////app.patch('/note/:id/public', isUser,  publicNote);
 
 /*
   ENDPOINTS DE CATEGORIAS  *** extra ***
@@ -111,23 +107,23 @@ app.use(express.json());
 // extra - Crear una nueva categoria
 // get - /category
 // Sólo usuarios registrados
-//app.get('/category', isUser, getCategory);
+app.get('/category', isUser, getCategory);
 
 // extra - Crear una nueva categoria
 // POST - /category
 // Sólo usuarios registrados
-//app.post('/category', isUser, newCategory);
+app.post('/category', isUser, newCategory);
 
 // extra - Editar categorias
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota "o admin"
-//app.put('/category/:id', isUser, categoryExists, editCategory);
+app.put('/category/:id', isUser, editCategory);
 
 // extra
 // Borrar una categoría
 // DELETE - /category/:id
 // Sólo usuario
-//app.delete('/category/:id', isUser, categoryExists, deleteCategory);
+app.delete('/category/:id', isUser, deleteCategory);
 
 /*
   ENDPOINTS DE USUARIO
@@ -137,10 +133,12 @@ app.use(express.json());
 // POST - /users
 // Público
 app.post('/users', newUser);
+app.post('/users', newUser);
 
 // Login de usuarios
 // POST - /users/login
 // Público
+app.post('/users/login', loginUser);
 app.post('/users/login', loginUser);
 
 // Middlewares finales
@@ -153,17 +151,21 @@ app.use((error, req, res, next) => {
     status: 'error',
     message: error.message,
   });
-}); 
+});
+});
 
 // Not found
- app.use((req, res) => {
+app.use((req, res) => {
+app.use((req, res) => {
   res.status(404).send({
     status: 'error',
     message: 'Not found',
   });
-}); 
+});
+});
 
-const port = 8888;
+//const port = 8888;
+//const port = 8888;
 
 app.listen(port, () => {
   console.log(`API funcionando en http://localhost:${port} `);
