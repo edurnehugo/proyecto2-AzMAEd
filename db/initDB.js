@@ -71,16 +71,6 @@ async function main() {
         `);
         
 
-
-    //console.log("Creando usuario administrador");
-    
-    //await connection.query(
-        // `
-      //INSERT INTO user(registrationDate, email, password, name, surname)
-      //VALUES(UTC_TIMESTAMP, "berto@ber.to", SHA2("${process.env.DEFAULT_ADMIN_PASSWORD}", 512), "Berto Yáñez", true, UTC_TIMESTAMP, UTC_TIMESTAMP)
-    //`
-    //);
-
     
   } catch (error) {
     console.error(error);
