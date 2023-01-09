@@ -7,16 +7,16 @@ const fileUpload = require('express-fileupload');
 const fileUpload = require('express-fileupload');
 const app = express();
 const port = 8080;
-const port = 8080;
+
 
 // Notes controllers
-/* 
-const listNotes = require('./controllersNotes/listNotes');
+const listNote = require('./controllersNotes/listNotes');
 const getNote = require('./controllersNotes/getNote');
-const newNote = require('./controllersNotes/newNote');
+const getNotePublic = require('./controllersNotes/getNotePublic');
+const createNote = require('./controllersNotes/createNote');
 const editNote = require('./controllersNotes/editNote');
 const deleteNote = require('./controllersNotes/deleteNote');
-const publicNote = require('./controllersNotes/publicNote');*/
+const publicNote = require('./controllersNotes/publicNote');
 
 // Category controllers
 const newCategory = require('./controllersCategory/newCategory'); //ok
@@ -26,9 +26,6 @@ const deleteCategory = require('./controllersCategory/deleteCategory'); //ok
 
 // Imagenes
 const uploadNoteImage = require('./controllersImages/uploadNoteImage');
-//extra-no pedido ////////////
-////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
-////const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
 const newUser = require('./controllersUser/newUser');
@@ -50,31 +47,27 @@ app.use('/uploads', express.static('./uploads'));
 // Listar todas las notas del usuario - solo titulos
 // GET - /notes
 // Privado
-////app.get('/notes/:id', listNotes);
+app.get('/notes', isUser, listNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
 // Privado
-////app.get('/notes/:id', isUser, getNote);
-////app.get('/notes/:id', isUser, getNote);
+app.get('/notes/:id', isUser, getNote);
 
 // Mostrar una sola nota
 // GET - /notes/:id
-//********  Pública ????? *********
-////app.get('/notes/:id', isUser, getNote);
-////app.get('/notes/:id', isUser, getNote);
+// Pública 
+app.get('/notes/public/:id', getNotePublic);
 
 // Crear una nueva Nota
 // POST - /notes
 // Sólo usuarios registrados
-////app.post('/notes', isUser, getCategory, newNote);
-////app.post('/notes', isUser, getCategory, newNote);
+app.post('/notes', isUser, createNote);
 
 // Editar una nota * put o pach * (Sólo los datos que no sean images)
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota
-////app.put('/notes/:id', isUser, noteExists, editNote);
-////app.put('/notes/:id', isUser, noteExists, editNote);
+app.put('/notes/:id', isUser, editNote);
 
 // extra
 // Añadir una imagen a una nota
@@ -92,12 +85,12 @@ app.post('/images/notes/:id', isUser, uploadNoteImage);
 // Borrar una nota
 // DELETE - /notes/:id
 // Sólo usuario que creó esta nota
-////app.delete('/notes/:id', isUser, isAdmin, deleteNote);
+app.delete('/notes/:id', isUser, deleteNote);
 
 // extra - marca una nota como pública
 // POST - /note/:id/public
 // Sólo usuarios registrados  put???
-////app.patch('/note/:id/public', isUser,  publicNote);
+app.put('/notes/public/:id', isUser, publicNote);
 
 /*
   ENDPOINTS DE CATEGORIAS  *** extra ***
@@ -152,16 +145,13 @@ app.use((error, req, res, next) => {
     message: error.message,
   });
 });
-});
 
 // Not found
-app.use((req, res) => {
 app.use((req, res) => {
   res.status(404).send({
     status: 'error',
     message: 'Not found',
   });
-});
 });
 
 //const port = 8888;

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 const { getConnection } = require("../db/db");
 const { generateError } = require("../helpers3");
 const jwt = require("jsonwebtoken");
 const bcrypt= require("bcrypt");
+=======
+const { getConnection } = require('../db/db');
+const { generateError } = require('../helpers3');
+const jwt = require('jsonwebtoken');
+>>>>>>> marc
 //const { loginUserSchema } = require("../validators/userValidators");
 
 async function loginUser(req, res, next) {
