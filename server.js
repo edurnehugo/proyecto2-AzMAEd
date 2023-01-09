@@ -61,7 +61,7 @@ app.get('/notes/public/:id', getNotePublic);
 // Sólo usuarios registrados
 app.post('/notes', isUser, createNote);
 
-// Editar una nota * put o pach * (Sólo los datos que no sean images)
+// Editar una nota
 // PUT - /notes/:id
 // Sólo usuario que creó esta nota
 app.put('/notes/:id', isUser, editNote);
@@ -84,7 +84,7 @@ app.delete('/notes/:id', isUser, deleteNote);
 app.put('/notes/public/:id', isUser, publicNote);
 
 /*
-  ENDPOINTS DE CATEGORIAS  *** extra ***
+  ENDPOINTS DE CATEGORIAS  
 */
 
 // EXTRA LISTAR CATEGORIAS
@@ -142,9 +142,6 @@ app.use((req, res) => {
     message: 'Not found',
   });
 });
-
-//const port = 8888;
-//const port = 8888;
 
 app.listen(port, () => {
   console.log(`API funcionando en http://localhost:${port} `);
