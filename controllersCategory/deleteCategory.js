@@ -9,7 +9,7 @@ const getCategoryById = async (id) => {
 
     const [result] = await connection.query(
       `
-      SELECT * FROM category WHERE id = ?
+      SELECT * FROM categories WHERE id = ?
     `,
       [id]
     );
@@ -32,7 +32,7 @@ const deteleCategoryById = async (id) => {
 
     await connection.query(
       `
-      DELETE FROM category WHERE id = ?
+      DELETE FROM categories WHERE id = ?
     `,
       [id]
     );

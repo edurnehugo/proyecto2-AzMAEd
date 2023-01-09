@@ -17,7 +17,7 @@ const newCategory = async (req, res, next) => {
     // Ejecutar la query
     const [result] = await connection.query(
       `
-      INSERT INTO category (title, user_id)
+      INSERT INTO categories (category, user_id)
       VALUES(?,?)
       `,
       [title, user_id]

@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-const { getConnection } = require("../db/db");
-const { generateError } = require("../helpers3");
-const jwt = require("jsonwebtoken");
-const bcrypt= require("bcrypt");
-=======
 const { getConnection } = require('../db/db');
 const { generateError } = require('../helpers3');
 const jwt = require('jsonwebtoken');
->>>>>>> marc
-//const { loginUserSchema } = require("../validators/userValidators");
+const bcrypt = require('bcrypt');
+//const { loginUserSchema } = require('../validators/userValidators');
 
 async function loginUser(req, res, next) {
   let connection;
@@ -21,7 +15,6 @@ async function loginUser(req, res, next) {
 
     // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
     const [dbUser] = await connection.query(
-      
       `SELECT id
       FROM user
       WHERE email=? 
@@ -38,11 +31,11 @@ async function loginUser(req, res, next) {
     // tengo que comparar la password que me pasan (variable password), con la que tengo
     // almacenada en la bbdd (user.password)
     // Si la función compare me da `true` significa que la comparación es correcta
-    const passwordsEqual = await bcrypt.compare(password,dbUser[0].password);
+    const passwordsEqual = await bcrypt.compare(password, dbUser[0].password);
 
     if (!passwordsEqual) {
       res.status(403).send();
-      console.log("Incorrect password...");
+      console.log('Incorrect password...');
       return;
     }
 
@@ -63,9 +56,6 @@ async function loginUser(req, res, next) {
         token,
       },
     });
-    
-   
-
   } catch (error) {
     next(error);
   } finally {

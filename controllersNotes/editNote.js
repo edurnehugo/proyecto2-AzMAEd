@@ -38,7 +38,7 @@ const editNote = async (req, res, next) => {
     const [categoryRes] = await connection.query(
       `
     SELECT *
-    FROM category
+    FROM categories
     WHERE user_id=?
     `,
       [user_id]

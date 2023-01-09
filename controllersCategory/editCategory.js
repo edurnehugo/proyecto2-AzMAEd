@@ -21,7 +21,7 @@ const editCategory = async (req, res, next) => {
     const [result] = await connection.query(
       `
     SELECT *
-    FROM category
+    FROM categories
     WHERE id=?
     `,
       [id]
@@ -42,7 +42,7 @@ const editCategory = async (req, res, next) => {
     // Ejecutar la query de edición de la categoria
     await connection.query(
       `
-      UPDATE category SET title=?
+      UPDATE categories SET title=?
       WHERE id=?
     `,
       [title, id]
