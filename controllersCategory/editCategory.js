@@ -6,8 +6,6 @@ const { editCategorySchema } = require('../validators/categoryValidators');
 const editCategory = async (req, res, next) => {
   let connection;
 
-  console.log('editar categoria');
-
   try {
     connection = await getConnection();
 
@@ -28,8 +26,7 @@ const editCategory = async (req, res, next) => {
     );
 
     if (result.length === 0) {
-      console.log('la categoria que quiero editar no existe');
-      throw generateError(
+       throw generateError(
         `La categoria ${result[0].category} no existe en la base de datos`,
         404
       );
@@ -58,7 +55,6 @@ const editCategory = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log('Error en editar categoria:', error);
     next(error);
   } finally {
     if (connection) connection.release();
