@@ -18,6 +18,8 @@ El usuario puede modificarlas en cualquier instante.
 
 A continuación se desarrolla el código necesario en VisualCode para crear la base de datos, así como el resto de código para su funcionamiento, pudiendo contrastarlo usando los programas MySQL Workbench y PostMan.
 
+*** error encontrado que modificaremos(pero hoy ya no) *** al borrar nota con imagen asociada, da error, debemos cambiar el código para borrar, si tiene imagen asignada, borrar primero la imagen y después borrar la nota.
+
 La estructura del API diseñada, es la siguiente:
 
 NotesForMe
