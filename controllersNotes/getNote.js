@@ -13,6 +13,9 @@ const getNote = async (req, res, next) => {
       `,
       [user_id, id]
     );
+      if (result.length === 0) {
+      throw generateError('esta nota no exite');
+    }
     res.send(result);
   } catch (error) {
     showDebug(error);
