@@ -59,9 +59,6 @@ const deleteCategory = async (req, res, next) => {
 
     const category = await getCategoryById(id);
 
-    console.log(req.auth.id);
-    console.log(category);
-
     if (req.auth.id !== category.user_id) {
       throw generateError(`No tienes permisos para borrar esta categoria`, 403);
     }
