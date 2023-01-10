@@ -7,9 +7,6 @@ async function loginUser(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
-    // comprobar que se reciben los datos necesarios
-    //await loginUserSchema.validateAsync(req.body);
-
     const { email, password } = req.body;
 
     // Seleccionar el usuario de la base de datos y comprobar que las passwords coinciden
