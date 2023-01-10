@@ -34,7 +34,6 @@ async function loginUser(req, res, next) {
 
     if (!passwordsEqual) {
       res.status(403).send();
-      console.log('Incorrect password...');
       return;
     }
 
