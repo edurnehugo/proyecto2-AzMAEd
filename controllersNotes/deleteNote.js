@@ -17,7 +17,7 @@ const getNoteById = async (id) => {
     if (result.length === 0) {
       throw generateError(`La nota con id: ${id} no existe`, 404);
     }
-    console.log(result[0]);
+   
 
     return result[0];
   } finally {
