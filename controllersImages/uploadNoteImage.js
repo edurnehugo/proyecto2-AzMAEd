@@ -54,8 +54,6 @@ const uploadNoteImage = async (req, res, next) => {
     if (!exists) {
       await fs.mkdir(uploadsDir);
     }
-    //await createPathIfNotExists(uploadsDir);
-    console.log(req.files.image.data);
     // Procesar la imagen
     const image = sharp(req.files.image.data);
     image.resize(1000);
