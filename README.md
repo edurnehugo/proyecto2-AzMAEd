@@ -90,7 +90,7 @@ NotesForMe
 
 ## Anotaciones a la hora de realizar el proyecto
 
-- Además de los comunes como plantear el funcionamiento, las partes y la unión de las tablas, la mayor complicación fue la conexión de Visual con Postman, sobre todo por la necesidad de revisar el buen funcionamiento del código, ya que sin esta parte no se puede avanzar en el proyecto.
+- Además de los comunes como plantear el funcionamiento, las partes y la unión de las tablas, la mayor complicación fue la conexión de Visual con Workbench, sobre todo por la necesidad de revisar el buen funcionamiento del código, ya que sin esta parte no se puede avanzar en el proyecto.
 
 - Problemas con Git por problemas de incompatibiidad entre sistemas operativos, especialmente entre windows y mac.
 
