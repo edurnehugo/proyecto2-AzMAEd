@@ -4,8 +4,6 @@ const { generateError, editPrivateSchema } = require('../helpers');
 const publicNote = async (req, res, next) => {
   let connection;
 
-  console.log('Haciendo publicas las notas');
-
   try {
     connection = await getConnection();
     const booleanchi = req.body.private;
@@ -53,7 +51,6 @@ const publicNote = async (req, res, next) => {
     `,
       [private, id]
     );
-    console.log(publico);
     // Devolver resultados
     res.send({
       status: 'ok',
@@ -64,7 +61,7 @@ const publicNote = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log('Error en hacer publica la nota:', error);
+    next('Error en hacer publica la nota:', error);
     next(error);
   } finally {
     if (connection) connection.release();
