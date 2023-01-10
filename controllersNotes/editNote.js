@@ -6,8 +6,6 @@ const { editEntrySchema } = require('../validators/notesValidators');
 const editNote = async (req, res, next) => {
   let connection;
 
-  console.log('editar notas');
-
   try {
     connection = await getConnection();
 
@@ -17,7 +15,6 @@ const editNote = async (req, res, next) => {
     const { category, text, category_id } = req.body;
     const { id } = req.params;
     const user_id = req.auth.id;
-    console.log(user_id);
     //Seleccionar datos actuales de la categoria
     const [result] = await connection.query(
       `
@@ -29,8 +26,7 @@ const editNote = async (req, res, next) => {
     );
 
     if (result.length === 0) {
-      console.log('la nota que quiero editar no existe');
-      throw generateError(
+         throw generateError(
         `La nota title ${result[0].category} no existe en la base de datos`,
         404
       );
@@ -43,8 +39,7 @@ const editNote = async (req, res, next) => {
     `,
       [user_id]
     );
-    console.log(categoryRes);
-    if (categoryRes[0].user_id !== req.auth.id) {
+      if (categoryRes[0].user_id !== req.auth.id) {
       throw generateError('Esta categoria no te pertenece', 403);
     }
     if (result[0].user_id !== req.auth.id) {
@@ -72,7 +67,7 @@ const editNote = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log('Error en editar nota:', error);
+    next('Error en editar nota:', error);
     next(error);
   } finally {
     if (connection) connection.release();
