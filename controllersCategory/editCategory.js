@@ -27,6 +27,7 @@ const editCategory = async (req, res, next) => {
 
     if (result.length === 0) {
       throw generateError(`La categoria no existe`, 404);
+
     }
 
     if (result[0].user_id !== req.auth.id) {
@@ -52,7 +53,6 @@ const editCategory = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log('Error en editar categoria:', error);
     next(error);
   } finally {
     if (connection) connection.release();

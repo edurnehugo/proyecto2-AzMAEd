@@ -28,7 +28,7 @@ const newUser = async (req, res, next) => {
         409
       );
     }
-    // meter el nuevo usuario en la base de datos sin activar
+   
 
     // cifrar la password antes de meterla en la bbdd
     const cryptPassword = await bcrypt.hash(password, 10);
@@ -70,3 +70,4 @@ const newUser = async (req, res, next) => {
 };
 
 module.exports = newUser;
+//esto es un cambio para el push de prueba

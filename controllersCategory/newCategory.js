@@ -3,7 +3,6 @@ const { categorySchema } = require('../validators/categoryValidators');
 
 const newCategory = async (req, res, next) => {
   let connection;
-
   try {
     connection = await getConnection();
 
@@ -33,7 +32,7 @@ const newCategory = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log('Error al introducir la categoria:', error);
+    console.error('Error al introducir la categoria:', error);
     next(error);
   } finally {
     if (connection) connection.release();
