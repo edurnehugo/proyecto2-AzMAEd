@@ -12,7 +12,6 @@ async function checkExists(path) {
     .catch(() => false);
 }
 
-
 const generateError = (message, status) => {
   const error = new Error(message);
   error.httpStatus = status;
@@ -30,5 +29,4 @@ module.exports = {
   checkExists,
   generateError,
   showDebug,
- 
 };

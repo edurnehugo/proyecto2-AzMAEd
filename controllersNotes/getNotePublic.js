@@ -5,6 +5,8 @@ const getNotePublic = async (req, res, next) => {
   let connection;
 
   try {
+    // falta la comprobación de que la nota es pública para poder mostrarla!!!!!
+
     connection = await getConnection();
     const { id } = req.params;
     const [result] = await connection.query(

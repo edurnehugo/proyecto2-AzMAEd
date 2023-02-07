@@ -6,9 +6,7 @@ const getCategory = async (req, res, next) => {
 
   try {
     connection = await getConnection();
-
-    const { id } = req.auth;
-    const user_id = id;
+    const { user_id } = req.auth.id;
 
     const result = await connection.query(
       `
@@ -20,10 +18,7 @@ const getCategory = async (req, res, next) => {
     );
 
     if (result.length === 0) {
-      throw generateError(
-        `El listado de categorias para el user_id: ${user_id} no existe`,
-        404
-      );
+      throw generateError(`El listado de categorias no existe`, 404);
     }
     showDebug(result);
     res.send({

@@ -10,6 +10,7 @@ async function main() {
 
     //Crear la BBDD
     await connection.query('CREATE DATABASE if not exists notesforme');
+    //meter variable desde el .env//////////////////////////////////////////////////////////////////////////
     await connection.query('USE notesforme;');
 
     // Borrar las tablas si existen

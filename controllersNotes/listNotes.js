@@ -7,7 +7,7 @@ const listNote = async (req, res, next) => {
     connection = await getConnection();
     const user_id = req.auth.id;
     const [results] = await connection.query(
-      `SELECT title 
+      `SELECT title, id 
       FROM notes 
       WHERE user_id=?`,
       [user_id]
