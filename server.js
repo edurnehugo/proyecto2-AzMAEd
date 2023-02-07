@@ -23,6 +23,7 @@ const deleteCategory = require('./controllersCategory/deleteCategory');
 
 // Imagenes
 const uploadNoteImage = require('./controllersImages/uploadNoteImage');
+const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 
 // User controllers
 const newUser = require('./controllersUser/newUser');
@@ -82,6 +83,12 @@ app.delete('/notes/:id', isUser, deleteNote);
 // POST /images/notes/:id
 // Solo usuario que crear esta nota
 app.post('/images/notes/:id', isUser, uploadNoteImage);
+
+// extra
+// Añadir una imagen a una nota
+// POST /images/notes/:id
+// Solo usuario que crear esta nota
+app.delete('/images/notes/:id', isUser, deleteNoteImage);
 
 /*
   ENDPOINTS DE CATEGORIAS  

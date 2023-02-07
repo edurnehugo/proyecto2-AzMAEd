@@ -3,7 +3,7 @@ const { categorySchema } = require('../validators/categoryValidators');
 
 const newCategory = async (req, res, next) => {
   let connection;
-  console.log('newcategory, introduce nueva categoria ');
+
   try {
     connection = await getConnection();
 
@@ -11,9 +11,8 @@ const newCategory = async (req, res, next) => {
 
     // Sacar de req.body los datos que necesito
     const { title } = req.body;
-    const { id } = req.auth;
+    const user_id = req.auth.id;
 
-    const user_id = id;
     // Ejecutar la query
     const [result] = await connection.query(
       `

@@ -14,7 +14,7 @@ const getCategoryById = async (id) => {
 
     if (categoryNotes.length > 0) {
       throw generateError(
-        `Elige una categoría que no esté asociada a ninugna nota`
+        `Elige una categoría que no esté asociada a ninguna nota`
       );
     }
 
@@ -25,7 +25,7 @@ const getCategoryById = async (id) => {
       [id]
     );
     if (result.length === 0) {
-      throw generateError(`La categoría con id: ${id} no existe`, 404);
+      throw generateError(`La categoría que quieres eliminar no existe`, 404);
     }
 
     return result[0];
@@ -59,9 +59,6 @@ const deleteCategory = async (req, res, next) => {
 
     const category = await getCategoryById(id);
 
-    console.log(req.auth.id);
-    console.log(category);
-
     if (req.auth.id !== category.user_id) {
       throw generateError(`No tienes permisos para borrar esta categoria`, 403);
     }
@@ -71,7 +68,7 @@ const deleteCategory = async (req, res, next) => {
     // Devolver resultados
     res.send({
       status: 'ok',
-      message: `La categoría con id: ${id} fue borrada`,
+      message: `La categoría fue borrada`,
     });
   } catch (error) {
     console.log('Error al borrar categoria:', error);

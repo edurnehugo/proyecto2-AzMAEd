@@ -52,14 +52,19 @@ const uploadNoteImage = async (req, res, next) => {
     const exists = await checkExists(uploadsDir);
 
     if (!exists) {
-      await fs.mkdir(uploadsDir);
+      await fs
+        .mkdir(uploadsDir)
+        .then(() => {
+          console.log('carpeta creada');
+        })
+        .catch((error) => {
+          console.error('error al crear carpeta', error);
+        });
     }
-    //await createPathIfNotExists(uploadsDir);
-    console.log(req.files.image.data);
+
     // Procesar la imagen
     const image = sharp(req.files.image.data);
     image.resize(1000);
-
     nameFileUp = `${nanoid(24)}.jpg`;
 
     await image.toFile(path.join(uploadsDir, nameFileUp));

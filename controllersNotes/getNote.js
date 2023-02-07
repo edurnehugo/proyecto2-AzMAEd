@@ -1,5 +1,5 @@
 const { getConnection } = require('../db/db');
-const { showDebug } = require('../helpers');
+const { showDebug, generateError } = require('../helpers');
 
 const getNote = async (req, res, next) => {
   let connection;
@@ -13,6 +13,10 @@ const getNote = async (req, res, next) => {
       `,
       [user_id, id]
     );
+
+    if (result.length === 0) {
+      throw generateError('esta nota no exite', 400);
+    }
     res.send(result);
   } catch (error) {
     showDebug(error);

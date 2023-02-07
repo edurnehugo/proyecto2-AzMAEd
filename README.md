@@ -8,7 +8,7 @@ Creación de una base de datos en donde se crean las tablas según la necesidad 
 
 Pasos iniciales para su puesta en marcha en un servidor local:
 
-- Iniciar con el código "node db/initDB.js" la base de datos de la API en MySQL Workbench.
+- Iniciar con el código "node db/initDB.js" en el terminal.
 - Inciar la API con "node server.js".
 
 En la colección de PostMan se encuentran todos los endpoints para empezar a trabajar con ella.

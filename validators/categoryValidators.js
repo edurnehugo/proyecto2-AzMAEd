@@ -9,20 +9,7 @@ const categorySchema = Joi.object().keys({
     .required()
     .error(
       generateError(
-        'El campo category debe existir, ser mayor de 2 caracteres y máximo de 10',
-        400
-      )
-    ),
-});
-
-const editCategorySchema = Joi.object().keys({
-  category: Joi.string()
-    .min(3)
-    .max(20)
-    .required()
-    .error(
-      generateError(
-        'El campo category debe existir, ser mayor de 2 caracteres y máximo de 10',
+        'El campo category debe existir, ser mayor de 3 caracteres y máximo de 10',
         400
       )
     ),
@@ -30,5 +17,4 @@ const editCategorySchema = Joi.object().keys({
 
 module.exports = {
   categorySchema,
-  editCategorySchema,
 };
