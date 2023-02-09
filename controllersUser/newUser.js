@@ -1,14 +1,12 @@
 const { getConnection } = require('../db/db');
-const { generateError } = require("../helpers3");
-const { newUserSchema } = require("../validators/userValidators");
-const bcrypt= require("bcrypt");
+const { generateError } = require('../helpers3');
+const { newUserSchema } = require('../validators/userValidators');
+const bcrypt = require('bcrypt');
 
-
-const newUser = async (req, res, next) =>{
-let connection;
+const newUser = async (req, res, next) => {
+  let connection;
 
   try {
-
     connection = await getConnection();
 
     await newUserSchema.validateAsync(req.body);
@@ -16,25 +14,24 @@ let connection;
     const { email, password, name, surname } = req.body;
 
     // comprobar que no existe un usuario con ese mismo email en la base de datos
-    const [existingUser] = await connection.query(`
+    const [existingUser] = await connection.query(
+      `
       SELECT id 
       FROM user
       WHERE email=?`,
       [email]
-      );
-      
-  
-     if (existingUser.length > 0) {
+    );
+
+    if (existingUser.length > 0) {
       throw generateError(
-        "Ya existe un usuario en la base de datos con ese email",
+        'Ya existe un usuario en la base de datos con ese email',
         409
       );
-      }
-    // meter el nuevo usuario en la base de datos sin activar
+    }
+   
 
     // cifrar la password antes de meterla en la bbdd
     const cryptPassword = await bcrypt.hash(password, 10);
-
 
     // meter el nuevo usuario en la base de datos sin activar
     const [dbUser] = await connection.query(
@@ -45,40 +42,32 @@ let connection;
     `,
       [email, cryptPassword, name, surname]
     );
-   
-      const user_id = dbUser.insertId;
 
-        const [catResult] = await connection.query(
-      
-      `INSERT INTO category
-       (title, user_id) VALUES 
+    const user_id = dbUser.insertId;
+
+    const [catResult] = await connection.query(
+      `INSERT INTO categories
+       (category, user_id) VALUES 
       ( 'viajes', "${user_id}"),
       ('compras', "${user_id}"),
       ( 'evento', "${user_id}"),
       ('recordatorios', "${user_id}")`,
       [user_id]
-      );
-      if (catResult.length === 0) {
-        throw generateError(
-          "Error al crear las categorías iniciales",
-          409
-        );
-      }
+    );
+    if (catResult.length === 0) {
+      throw generateError('Error al crear las categorías iniciales', 409);
+    }
 
     res.send({
-      status: "ok",
-      message:
-        "Usuario registrado.",
+      status: 'ok',
+      message: 'Usuario registrado.',
     });
-  }catch (error) {
+  } catch (error) {
     next(error);
   } finally {
     if (connection) connection.release();
   }
-}       
-      
-      
-   
-
+};
 
 module.exports = newUser;
+//esto es un cambio para el push de prueba

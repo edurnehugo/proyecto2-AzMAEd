@@ -25,8 +25,6 @@ async function main() {
     // Crear las tablas de nuevo
     console.log('Creando tablas');
 
-    
-
     await connection.query(`
         CREATE TABLE user (
             id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -73,6 +71,7 @@ async function main() {
                       FOREIGN KEY (user_id) references user (id)
                 )
             `);
+
     await connection.query(
                       `
                       INSERT INTO user (registrationDate, email, password,role, name, surname)
