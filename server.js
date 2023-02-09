@@ -28,7 +28,12 @@ const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 // User controllers
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
+
+// Admin controllers
+const isAdmin = require('./controllersAdmin/isAdmin');
+
 const isUser = require('./middleware/isUser');
+
 
 // Middlewares iniciales
 
@@ -126,6 +131,20 @@ app.post('/users', newUser);
 // POST - /users/login
 app.post('/users/login', loginUser);
 
+//Editar datos del usuario: email, name, apellidos
+//PUT -/user/:id
+//Sólo el usuario o el Admin
+app.put("/user/:id", isUser, isAdmin, editUser);
+
+//Borrar un usuario
+//DELETE- /user/:id
+//Sólo el Admin
+app.delete("/user/:id", isUser, isAdmin, deleteUser);
+
+//Editar password de usuario
+//POST- /user/:id/password
+//Sólo el usuario
+app.post("/user/:id/password", isUser, editUserPassword);
 // Middlewares finales
 
 // Error middleware

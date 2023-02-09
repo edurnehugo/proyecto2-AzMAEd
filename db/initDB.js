@@ -10,7 +10,6 @@ async function main() {
 
     //Crear la BBDD
     await connection.query('CREATE DATABASE if not exists notesforme');
-    //meter variable desde el .env//////////////////////////////////////////////////////////////////////////
     await connection.query('USE notesforme;');
 
     // Borrar las tablas si existen
@@ -21,6 +20,7 @@ async function main() {
     await connection.query('DROP TABLE IF EXISTS notes');
     await connection.query('DROP TABLE IF EXISTS categories');
     await connection.query('DROP TABLE IF EXISTS user');
+    
 
     // Crear las tablas de nuevo
     console.log('Creando tablas');
@@ -31,6 +31,7 @@ async function main() {
             registrationDate DATETIME,
             email VARCHAR(100) UNIQUE NOT NULL,
             password varchar (150) NOT NULL,
+            role ENUM ("normal", "admin") DEFAULT "normal" NOT NULL,
             name varchar (100), 
             surname varchar (150)
             )
@@ -70,6 +71,14 @@ async function main() {
                       FOREIGN KEY (user_id) references user (id)
                 )
             `);
+
+    await connection.query(
+                      `
+                      INSERT INTO user (registrationDate, email, password,role, name, surname)
+                      VALUES (UTC_TIMESTAMP, "aldaralucas18@hotmail.com", SHA2("${process.env.DEFAULT_ADMIN_PASSWORD}",512), "admin", "Aldara", "Lucas")
+                      `
+                      );
+
   } catch (error) {
     console.error(error);
   } finally {
