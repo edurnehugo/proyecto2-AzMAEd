@@ -9,9 +9,8 @@ const publicNote = async (req, res, next) => {
     const booleanchi = req.body.private;
     const validator = await editPrivateSchema?.validateAsync(booleanchi);
 
-
     if (!Boolean) {
-     throw generateError(`Hay que indicar si es publica o privada`, 404);
+      throw generateError(`Hay que indicar si es publica o privada`, 404);
     }
 
     // Sacamos los datos
@@ -30,7 +29,7 @@ const publicNote = async (req, res, next) => {
     );
 
     if (result.length === 0) {
-       throw generateError(`La nota que quieres hacer publica no existe`, 404);
+      throw generateError(`La nota que quieres hacer publica no existe`, 404);
     }
     if (result[0].user_id !== req.auth.id) {
       throw generateError(
@@ -41,7 +40,7 @@ const publicNote = async (req, res, next) => {
     connection = await getConnection();
 
     // Ejecutar la query de hacer publica la nota
-    const [publico] = await connection.query(
+    await connection.query(
       `
     UPDATE notes SET private=? 
     WHERE id=?
@@ -49,14 +48,17 @@ const publicNote = async (req, res, next) => {
       [private, id]
     );
     // Devolver resultados
-    res.send({
-      status: 'ok',
-      message: 'Nota hecha publica',
-      data: {
-        id,
-        private,
-      },
-    });
+    if (private === true) {
+      res.send({
+        status: 'ok',
+        message: 'Nota hecha privada',
+      });
+    } else {
+      res.send({
+        status: 'ok',
+        message: 'Nota hecha pública',
+      });
+    }
   } catch (error) {
     next('Error en hacer publica la nota:', error);
     next(error);

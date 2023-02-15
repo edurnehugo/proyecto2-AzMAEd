@@ -30,10 +30,10 @@ const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
 
 // Admin controllers
-const isAdmin = require('./controllersAdmin/isAdmin');
+//const isAdmin = require('./controllersAdmin/isAdmin');
 
 const isUser = require('./middleware/isUser');
-
+const getUserController = require('./controllersUser/getUser');
 
 // Middlewares iniciales
 
@@ -134,17 +134,22 @@ app.post('/users/login', loginUser);
 //Editar datos del usuario: email, name, apellidos
 //PUT -/user/:id
 //Sólo el usuario o el Admin
-app.put("/user/:id", isUser, isAdmin, editUser);
+//app.put('/user/:id', isUser, isAdmin, editUser);
 
 //Borrar un usuario
 //DELETE- /user/:id
 //Sólo el Admin
-app.delete("/user/:id", isUser, isAdmin, deleteUser);
+//app.delete('/user/:id', isUser, isAdmin, deleteUser);
 
 //Editar password de usuario
 //POST- /user/:id/password
 //Sólo el usuario
-app.post("/user/:id/password", isUser, editUserPassword);
+//app.post('/user/:id/password', isUser, editUserPassword);
+
+// Get de usuarios
+// GET - /users/login
+app.get('/users/user', isUser, getUserController);
+
 // Middlewares finales
 
 // Error middleware
