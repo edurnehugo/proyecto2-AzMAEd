@@ -9,7 +9,7 @@ const newCategory = async (req, res, next) => {
     await categorySchema.validateAsync(req.body);
 
     // Sacar de req.body los datos que necesito
-    const { title } = req.body;
+    const { category } = req.body;
     const user_id = req.auth.id;
 
     // Ejecutar la query
@@ -18,7 +18,7 @@ const newCategory = async (req, res, next) => {
       INSERT INTO categories (category, user_id)
       VALUES(?,?)
       `,
-      [title, user_id]
+      [category, user_id]
     );
 
     // Devolver el resultado
@@ -27,7 +27,7 @@ const newCategory = async (req, res, next) => {
       status: 'ok',
       data: {
         id: result.insertId,
-        title,
+        category,
         user_id,
       },
     });
