@@ -1,5 +1,5 @@
 const { getConnection } = require('../db/db');
-const { showDebug } = require('../helpers');
+const { showDebug, generateError } = require('../helpers2');
 const { newEntrySchema } = require('../validators/notesValidators');
 
 const createNote = async (req, res, next) => {
@@ -11,6 +11,16 @@ const createNote = async (req, res, next) => {
     const { title, text, place, category_id } = req.body;
     const { id } = req.auth;
     const user_id = id;
+
+    const [category] = await connection.query(
+      `SELECT user_id FROM categories where id= ?;
+      `,
+      [category_id]
+    );
+
+    if (category[0].user_id !== user_id) {
+      throw generateError('esta categoría no exite', 400);
+    }
 
     //Ejecutar la query
     const [row] = await connection.query(
