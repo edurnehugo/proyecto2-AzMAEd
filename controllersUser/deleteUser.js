@@ -62,7 +62,7 @@ async function deleteUser(req, res, next) {
 
            res.send({
                status: "ok",
-               message: `El usuario ${id} y todos sus datos se han eliminado correctamente`,
+               message: `El usuario y todos sus datos se han eliminado correctamente`,
             });
         } catch (error) {
             next(error);

@@ -28,9 +28,11 @@ const deleteNoteImage = require('./controllersImages/deleteNoteImage');
 // User controllers
 const newUser = require('./controllersUser/newUser');
 const loginUser = require('./controllersUser/loginUser');
+const deleteUser= require ('./controllersUser/deleteUser');
+const modifyUser= require ('./controllersUser/modifyUser');
 
 // Admin controllers
-//const isAdmin = require('./controllersAdmin/isAdmin');
+const isAdmin = require('./middleware/isAdmin');
 
 const isUser = require('./middleware/isUser');
 const getUserController = require('./controllersUser/getUser');
@@ -131,20 +133,16 @@ app.post('/users', newUser);
 // POST - /users/login
 app.post('/users/login', loginUser);
 
-//Editar datos del usuario: email, name, apellidos
+//Editar datos del usuario: email,pasword, nombre, apellidos
 //PUT -/user/:id
 //Sólo el usuario o el Admin
-//app.put('/user/:id', isUser, isAdmin, editUser);
+app.put('/user/:id', isUser, modifyUser);
 
 //Borrar un usuario
 //DELETE- /user/:id
 //Sólo el Admin
-//app.delete('/user/:id', isUser, isAdmin, deleteUser);
+app.delete('/user/:id', isUser, isAdmin, deleteUser);
 
-//Editar password de usuario
-//POST- /user/:id/password
-//Sólo el usuario
-//app.post('/user/:id/password', isUser, editUserPassword);
 
 // Get de usuarios
 // GET - /users/login

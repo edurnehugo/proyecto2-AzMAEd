@@ -1,7 +1,8 @@
 
 const { getConnection } = require("../db/db");
 const{generateError} = require("../helpers");
-
+const {changeUser} =require ("../validators/userValidators")
+const bcrypt = require('bcrypt');
 
 async function modifyUser(req, res, next) {
   let connection;
@@ -9,14 +10,14 @@ async function modifyUser(req, res, next) {
   try {
     connection = await getConnection();
 
-    await modifyUser.validateAsync(req.body);
+    await changeUser.validateAsync(req.body);
 
     const { id } = req.params;
-    const { email, name, surname } = req.body;
-
+    const { name, surname, password } = req.body;
+    
     // Comprobar que el id de usuario que queremos cambiar es
-    // el mismo que firma la petición o bien es admin
-    if (req.auth.id !== Number(id) && req.auth.role !== "admin") {
+    // el mismo que firma la petición 
+    if (req.auth.id !==parseInt (id)) {
       throw generateError("No tienes permisos para editar este usuario", 403);
     }
 
@@ -33,33 +34,15 @@ async function modifyUser(req, res, next) {
     if (currentUser.length === 0) {
       throw generateError(`El usuario no existe`, 404);
     }
-
-    // Si el email es diferente al actual comprobar que no existe en la base de datos
-    if (email !== currentUser[0].email) {
-      const [existingEmail] = await connection.query(
-        `
-        SELECT id
-        FROM user
-        WHERE email=? 
-      `,
-        [email]
-      );
-
-      if (existingEmail.length > 0) {
-        throw generateError(
-          "Los sentimos, ese email ya existe. Prueba otro por favor...",
-          403
-        );
-        }
-      }
+    const cryptPassword = await bcrypt.hash(password, 10);
 
       await connection.query(
         `
         UPDATE user 
-        SET name=?, surname=?, email=?
+        SET name=?, surname=?, password=?
         WHERE id=?
       `,
-        [name, surname, email, id]
+        [name, surname, cryptPassword, id]
       );
 
       // Dar una respuesta

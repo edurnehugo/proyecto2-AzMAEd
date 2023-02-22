@@ -1,6 +1,6 @@
 const { getConnection } = require('../db/db');
 const { generateError } = require('../helpers3');
-const { newUserSchema } = require('../validators/userValidators');
+const { newUserSchema } = require('../validators/userValidators'); 
 const bcrypt = require('bcrypt');
 
 const newUser = async (req, res, next) => {
