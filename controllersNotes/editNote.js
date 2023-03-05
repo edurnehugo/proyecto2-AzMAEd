@@ -1,6 +1,5 @@
 const { getConnection } = require('../db/db');
 const { generateError } = require('../helpers');
-
 const { editEntrySchema } = require('../validators/notesValidators');
 
 const editNote = async (req, res, next) => {
@@ -12,13 +11,13 @@ const editNote = async (req, res, next) => {
     await editEntrySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { title, text, category_id } = req.body;
+    const { title, text, place, category_id} = req.body;
     const { id } = req.params;
     const user_id = req.auth.id;
     //Seleccionar datos actuales de la categoria
-    const [result] = await connection.query(
+    const [[result]] = await connection.query(
       `
-    SELECT *
+    SELECT id, title, text, place, category_id
     FROM notes
     WHERE id=?
     `,
@@ -30,7 +29,7 @@ const editNote = async (req, res, next) => {
       throw generateError(`La nota no existe en la base de datos`, 404);
 
     }
-    const [categoryRes] = await connection.query(
+     const [categoryRes] = await connection.query(
       `
     SELECT *
     FROM categories
@@ -48,10 +47,15 @@ const editNote = async (req, res, next) => {
     // Ejecutar la query de edición de la categoria
     await connection.query(
       `
-      UPDATE notes SET title=?, category_id=?, text=?
+      UPDATE notes SET title=?, text=?, place=?, 
       WHERE id=?
     `,
-      [title, category_id, text, id]
+      [
+        title || result.title,
+         text || result.text,
+          place || result.place,
+          category_id,
+           id]
     );
 
     // Devolver resultados
@@ -60,9 +64,9 @@ const editNote = async (req, res, next) => {
       message: 'Nota editada',
       data: {
         id,
-        category,
-        category_id,
+        title,
         text,
+        place,
       },
     });
   } catch (error) {

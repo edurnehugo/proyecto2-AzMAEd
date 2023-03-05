@@ -36,26 +36,21 @@ const newEntrySchema = Joi.object().keys({
 });
 
 const editEntrySchema = Joi.object().keys({
-  category_id: Joi.number()
-    .min(1)
-    .required()
-    .error(
-      generateError(
-        'El campo category debe existir y ser mayor de 2 caracteres',
-        400
-      )
-    ),
+  place: Joi.string()
+    .min(3)
+    .max(50)
+    .error(generateError('El campo place debe existir', 400)),
   text: Joi.string()
     .min(5)
     .max(10000)
-    .required()
     .error(generateError('El campo text debe existir', 400)),
   title: Joi.string()
     .min(3)
     .max(100)
-    .required()
     .error(generateError('El campo title debe existir', 400)),
-});
+})
+    .min(1);
+
 const editPrivateSchema = Joi.object().keys({
   private: Joi.boolean()
     .required()
@@ -63,6 +58,7 @@ const editPrivateSchema = Joi.object().keys({
     .falsy('no')
     .sensitive()
     .error(generateError('El campo private debe existir', 400)),
+
 });
 module.exports = {
   newEntrySchema,
