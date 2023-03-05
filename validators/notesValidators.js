@@ -35,21 +35,18 @@ const newEntrySchema = Joi.object().keys({
     .error(generateError('El campo place debe existir', 400)),
 });
 
-const editEntrySchema = Joi.object().keys({
-  place: Joi.string()
-    .min(3)
-    .max(50)
-    .error(generateError('El campo place debe existir', 400)),
-  text: Joi.string()
-    .min(5)
-    .max(10000)
-    .error(generateError('El campo text debe existir', 400)),
-  title: Joi.string()
-    .min(3)
-    .max(100)
-    .error(generateError('El campo title debe existir', 400)),
-})
-    .min(1);
+const editEntrySchema = Joi.object()
+  .keys({
+    text: Joi.string()
+      .min(5)
+      .max(10000)
+      .error(generateError('El campo text debe existir', 400)),
+    title: Joi.string()
+      .min(3)
+      .max(100)
+      .error(generateError('El campo title debe existir', 400)),
+  })
+  .min(1);
 
 const editPrivateSchema = Joi.object().keys({
   private: Joi.boolean()
@@ -58,7 +55,6 @@ const editPrivateSchema = Joi.object().keys({
     .falsy('no')
     .sensitive()
     .error(generateError('El campo private debe existir', 400)),
-
 });
 module.exports = {
   newEntrySchema,

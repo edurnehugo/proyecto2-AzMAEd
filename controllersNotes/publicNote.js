@@ -7,7 +7,7 @@ const publicNote = async (req, res, next) => {
   try {
     connection = await getConnection();
     const booleanchi = req.body.private;
-    const validator = await editPrivateSchema?.validateAsync(booleanchi);
+    await editPrivateSchema?.validateAsync(booleanchi);
 
     if (!Boolean) {
       throw generateError(`Hay que indicar si es publica o privada`, 404);

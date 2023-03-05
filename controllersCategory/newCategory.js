@@ -28,7 +28,6 @@ const newCategory = async (req, res, next) => {
       data: {
         id: result.insertId,
         category,
-        user_id,
       },
     });
   } catch (error) {
