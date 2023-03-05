@@ -11,19 +11,25 @@ const editNote = async (req, res, next) => {
     await editEntrySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { title, text, place, category_id } = req.body;
-    const { id } = req.params;
+    const { title, text, place, category_id} = req.body;
+    const { note_id } = req.params;
+    const id= parseInt (note_id);
     const user_id = req.auth.id;
+
+    
+
+    console.log ("prueba",note_id);
     //Seleccionar datos actuales de la categoria
+
     const [[result]] = await connection.query(
       `
-    SELECT id, title, text, place, category_id
+    SELECT id, title, text, place, category_id, user_id
     FROM notes
     WHERE id=?
     `,
       [id]
     );
-
+console.log(result);
     if (result.length === 0) {
       throw generateError(`La nota no existe en la base de datos`, 404);
     }
@@ -38,7 +44,8 @@ const editNote = async (req, res, next) => {
     if (categoryRes[0].user_id !== req.auth.id) {
       throw generateError('Esta categoria no te pertenece', 403);
     }
-    if (result[0].user_id !== req.auth.id) {
+
+    if (result.user_id !== req.auth.id) {
       throw generateError('No tienes permisos para editar esta nota', 403);
     }
 
