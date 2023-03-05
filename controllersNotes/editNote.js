@@ -11,7 +11,7 @@ const editNote = async (req, res, next) => {
     await editEntrySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { title, text, place, category_id} = req.body;
+    const { title, text, place, category_id } = req.body;
     const { id } = req.params;
     const user_id = req.auth.id;
     //Seleccionar datos actuales de la categoria
@@ -25,11 +25,9 @@ const editNote = async (req, res, next) => {
     );
 
     if (result.length === 0) {
-     
       throw generateError(`La nota no existe en la base de datos`, 404);
-
     }
-     const [categoryRes] = await connection.query(
+    const [categoryRes] = await connection.query(
       `
     SELECT *
     FROM categories
@@ -37,7 +35,7 @@ const editNote = async (req, res, next) => {
     `,
       [user_id]
     );
-      if (categoryRes[0].user_id !== req.auth.id) {
+    if (categoryRes[0].user_id !== req.auth.id) {
       throw generateError('Esta categoria no te pertenece', 403);
     }
     if (result[0].user_id !== req.auth.id) {
@@ -52,10 +50,11 @@ const editNote = async (req, res, next) => {
     `,
       [
         title || result.title,
-         text || result.text,
-          place || result.place,
-          category_id,
-           id]
+        text || result.text,
+        place || result.place,
+        category_id,
+        id,
+      ]
     );
 
     // Devolver resultados

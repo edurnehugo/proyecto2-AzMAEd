@@ -1,6 +1,5 @@
 const { getConnection } = require('../db/db');
 const { generateError } = require('../helpers2');
-
 const { categorySchema } = require('../validators/categoryValidators');
 
 const editCategory = async (req, res, next) => {
@@ -12,7 +11,7 @@ const editCategory = async (req, res, next) => {
     await categorySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { title } = req.body;
+    const { category } = req.body;
     const { id } = req.params;
 
     //Seleccionar datos actuales de la categoria
@@ -27,7 +26,6 @@ const editCategory = async (req, res, next) => {
 
     if (result.length === 0) {
       throw generateError(`La categoria no existe`, 404);
-
     }
 
     if (result[0].user_id !== req.auth.id) {
@@ -40,7 +38,7 @@ const editCategory = async (req, res, next) => {
       UPDATE categories SET category=?
       WHERE id=?
     `,
-      [title, id]
+      [category, id]
     );
 
     // Devolver resultados
@@ -49,7 +47,7 @@ const editCategory = async (req, res, next) => {
       message: 'Categoría editada',
       data: {
         id,
-        title,
+        category,
       },
     });
   } catch (error) {

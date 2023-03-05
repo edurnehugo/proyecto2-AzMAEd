@@ -1,4 +1,4 @@
-const { getConnection } = require('../db/db'); 
+const { getConnection } = require('../db/db');
 const { generateError } = require('../helpers');
 const { changeUser } = require('../validators/userValidators');
 const bcrypt = require('bcrypt');
@@ -29,7 +29,7 @@ async function modifyUser(req, res, next) {
     `,
       [id]
     );
-    console.log(currentUser);
+
     if (!currentUser) {
       throw generateError(`El usuario no existe`, 404);
     }
@@ -65,4 +65,3 @@ async function modifyUser(req, res, next) {
 }
 
 module.exports = modifyUser;
-

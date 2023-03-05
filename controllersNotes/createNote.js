@@ -9,8 +9,7 @@ const createNote = async (req, res, next) => {
     connection = await getConnection();
     await newEntrySchema.validateAsync(req.body);
     const { title, text, place, category_id } = req.body;
-    const { id } = req.auth;
-    const user_id = id;
+    const id = req.auth.id;
 
     const [category] = await connection.query(
       `SELECT user_id FROM categories where id= ?;
@@ -18,7 +17,7 @@ const createNote = async (req, res, next) => {
       [category_id]
     );
 
-    if (category[0].user_id !== user_id) {
+    if (category[0].user_id !== id) {
       throw generateError('esta categoría no exite', 400);
     }
 
@@ -26,7 +25,7 @@ const createNote = async (req, res, next) => {
     const [row] = await connection.query(
       'INSERT INTO notes (title, text, place, user_id, category_id, dateCreate) VALUES (?,?,?,?,?, UTC_TIMESTAMP)',
 
-      [title, text, place, user_id, category_id]
+      [title, text, place, id, category_id]
     );
     res.send({
       status: 'ok',
@@ -34,7 +33,6 @@ const createNote = async (req, res, next) => {
       data: {
         id: row.insertId,
         title,
-        user_id,
       },
     });
   } catch (error) {
