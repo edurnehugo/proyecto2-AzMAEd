@@ -7,17 +7,16 @@ const publicNote = async (req, res, next) => {
   try {
     connection = await getConnection();
     const booleanchi = req.body.private;
-    await editPrivateSchema?.validateAsync(booleanchi);
+   await editPrivateSchema?.validateAsync(booleanchi);
 
-    if (!Boolean) {
+   /*  if (!Boolean) {
       throw generateError(`Hay que indicar si es publica o privada`, 404);
-    }
+    } */
 
     // Sacamos los datos
     const { private } = req.body;
     const { id } = req.params;
-    const user_id = req.auth.id;
-    console.log(user_id);
+   
     //Seleccionar datos actuales de la categoria
     const [result] = await connection.query(
       `

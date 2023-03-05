@@ -10,11 +10,11 @@ const getNote = async (req, res, next) => {
     console.log(id);
     const user_id = req.auth.id;
     const [result] = await connection.query(
-      `SELECT title, text, place, dateCreate,
-       category_id, c.category , i.nameFile, i.id as images_id FROM notes n LEFT JOIN categories c on n.category_id = c.id LEFT JOIN images i on n.id = i.notes_id  WHERE n.user_id = ? AND n.id= ?;
+      `SELECT title, text, place, category_id, private, c.category , i.nameFile, i.id as images_id FROM notes n LEFT JOIN categories c on n.category_id = c.id LEFT JOIN images i on n.id = i.notes_id  WHERE n.user_id = ? AND n.id= ?;
       `,
       [user_id, id]
     );
+    console.log("linea 17",result);
     if (result.length === 0) {
       throw generateError('esta nota no exite', 400);
     }
