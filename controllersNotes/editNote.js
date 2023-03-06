@@ -11,13 +11,15 @@ const editNote = async (req, res, next) => {
     await editEntrySchema.validateAsync(req.body);
 
     // Sacamos los datos
-    const { title, text, place, category_id } = req.body;
+    const { title, text, place } = req.body;
+
     const { id } = req.params;
     const user_id = req.auth.id;
+    console.log(id);
     //Seleccionar datos actuales de la categoria
     const [[result]] = await connection.query(
       `
-    SELECT id, title, text, place, category_id
+    SELECT id, title, text, place
     FROM notes
     WHERE id=?
     `,
@@ -38,23 +40,13 @@ const editNote = async (req, res, next) => {
     if (categoryRes[0].user_id !== req.auth.id) {
       throw generateError('Esta categoria no te pertenece', 403);
     }
-    if (result[0].user_id !== req.auth.id) {
-      throw generateError('No tienes permisos para editar esta nota', 403);
-    }
 
     // Ejecutar la query de edición de la categoria
     await connection.query(
       `
-      UPDATE notes SET title=?, text=?, place=?, 
-      WHERE id=?
-    `,
-      [
-        title || result.title,
-        text || result.text,
-        place || result.place,
-        category_id,
-        id,
-      ]
+      UPDATE notes SET title=?, text=?, place=?
+      WHERE id=?`,
+      [title || result.title, text || result.text, place || result.place, id]
     );
 
     // Devolver resultados
