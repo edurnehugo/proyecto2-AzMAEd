@@ -45,6 +45,10 @@ const editEntrySchema = Joi.object()
       .min(3)
       .max(100)
       .error(generateError('El campo title debe existir', 400)),
+    place: Joi.string()
+      .min(3)
+      .max(50)
+      .error(generateError('El campo place debe existir', 400)),
   })
   .min(1);
 
